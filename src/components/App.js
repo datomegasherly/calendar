@@ -1,17 +1,22 @@
-import { Grid, Paper } from '@material-ui/core';
 import React, { Component } from 'react';
+import MainContext from '../context';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Header from './header';
 
 class App extends Component {
-    render() {
+    state = {
+        test: '123',
+        setTest: test => this.setState({test}),
+    }
+    render(){
         return (
-            <Grid container spacing={2}>
-                <Grid item xs={6}>
-                    <Paper>Test</Paper>
-                </Grid>
-                <Grid item xs={6}>
-                    <Paper>Test2</Paper>
-                </Grid>
-            </Grid>
+            <MainContext.Provider value={this.state}>
+                <Router>
+                    <Switch>
+                        <Route exact path="/" component={Header} />
+                    </Switch>
+                </Router>
+            </MainContext.Provider>
         )
     }
 }
