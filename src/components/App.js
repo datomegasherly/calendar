@@ -1,24 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './header';
 
-class App extends Component {
-    state = {
-        test: '123',
-        setTest: test => this.setState({test}),
+export function App(){
+    const [test, setTest] = useState('123');
+    let state = {
+        test,
+        setTest
     }
-    render(){
-        return (
-            <MainContext.Provider value={this.state}>
-                <Router>
-                    <Switch>
-                        <Route exact path="/" component={Header} />
-                    </Switch>
-                </Router>
-            </MainContext.Provider>
-        )
-    }
+    return (
+        <MainContext.Provider value={state} data-test="app-component">
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={Header} />
+                </Switch>
+            </Router>
+        </MainContext.Provider>
+    )
 }
 
 export default App;
