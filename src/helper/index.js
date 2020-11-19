@@ -5,9 +5,18 @@ import { Fragment } from 'react';
 
 const useStyles = makeStyles({
     selectSize: {
-        width: '100%'
+        width: '100%',
+    },
+    padding: {
+        paddingLeft: '6px',
+        paddingRight: '6px'
     }
 });
+
+const getLastDay = (year, month) => {
+    let lastDay = new Date(year, month, 0);
+    return lastDay.getDate();
+}
 
 const getDate = () => {
     let date = new Date();
@@ -18,23 +27,47 @@ const getDate = () => {
 function Year() {
     let context = useContext(MainContext);
     let { year, setYear } = context;
+    let [y, m, d] = getDate();
     const classes = useStyles();
+    let years = [];
+    for(let i = y - 5;i <= y + 2;i++){
+        years.push(i);
+    }
     return (
         <Fragment>
             <FormHelperText>Year</FormHelperText>
-            <Select defaultValue={year} className={classes.selectSize} onChange={(ev) => setYear(ev.target.value)}>
-                <MenuItem value={2017}>2017</MenuItem>
-                <MenuItem value={2018}>2018</MenuItem>
-                <MenuItem value={2019}>2019</MenuItem>
-                <MenuItem value={2020}>2020</MenuItem>
-                <MenuItem value={2021}>2021</MenuItem>
-                <MenuItem value={2022}>2022</MenuItem>
+            <Select value={year} className={classes.selectSize} onChange={(ev) => setYear(ev.target.value)}>
+                {
+                    years.map(y => <MenuItem key={y} value={y}>{y}</MenuItem>)
+                }
+            </Select>
+        </Fragment>
+    )
+}
+
+function Month() {
+    let context = useContext(MainContext);
+    let { month, setMonth } = context;
+    const classes = useStyles();
+    let months = [];
+    for(let i = 1;i <= 12;i++){
+        months.push(i);
+    }
+    return (
+        <Fragment>
+            <FormHelperText>Month</FormHelperText>
+            <Select value={month} className={classes.selectSize} onChange={(ev) => setMonth(ev.target.value)}>
+                {
+                    months.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)
+                }
             </Select>
         </Fragment>
     )
 }
 
 export {
+    useStyles,
     getDate,
-    Year
+    Year,
+    Month,
 }
