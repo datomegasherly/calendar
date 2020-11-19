@@ -8,8 +8,8 @@ const useStyles = makeStyles({
         width: '100%',
     },
     padding: {
-        paddingLeft: '6px',
-        paddingRight: '6px'
+        paddingLeft: '3px',
+        paddingRight: '3px'
     }
 });
 
@@ -47,7 +47,7 @@ function Year() {
 
 function Month() {
     let context = useContext(MainContext);
-    let { month, setMonth } = context;
+    let { month, setMonth, setDay } = context;
     const classes = useStyles();
     let months = [];
     for(let i = 1;i <= 12;i++){
@@ -56,9 +56,30 @@ function Month() {
     return (
         <Fragment>
             <FormHelperText>Month</FormHelperText>
-            <Select value={month} className={classes.selectSize} onChange={(ev) => setMonth(ev.target.value)}>
+            <Select value={month} className={classes.selectSize} onChange={(ev) => { setMonth(ev.target.value);setDay(1)}}>
                 {
                     months.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)
+                }
+            </Select>
+        </Fragment>
+    )
+}
+
+function Day() {
+    let context = useContext(MainContext);
+    let { day, setDay, month, year } = context;
+    const classes = useStyles();
+    let days = [];
+    let lastDay = getLastDay(year, month);
+    for(let i = 1;i <= lastDay;i++){
+        days.push(i);
+    }
+    return (
+        <Fragment>
+            <FormHelperText>Day</FormHelperText>
+            <Select value={day} className={classes.selectSize} onChange={(ev) => setDay(ev.target.value)}>
+                {
+                    days.map(d => <MenuItem key={d} value={d}>{d}</MenuItem>)
                 }
             </Select>
         </Fragment>
@@ -70,4 +91,5 @@ export {
     getDate,
     Year,
     Month,
+    Day
 }
