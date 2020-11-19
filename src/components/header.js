@@ -1,26 +1,28 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
-import { Grid, Button, FormControl, Select, MenuItem, FormHelperText, makeStyles } from '@material-ui/core';
-import { Year } from '../helper';
+import { Grid } from '@material-ui/core';
+import { useStyles, Year, Month } from '../helper';
+
 
 function Header() {
     let context = useContext(MainContext);
-    let { year } = context;
+    let { year, month, day } = context;
+    let classes = useStyles();
     return (
         <Grid container>
             <Grid item container xs={6}>
-                <Grid item xs={12} sm={12} md={4}>
+                <Grid className={classes.padding} item xs={12} sm={12} md={4}>
                     <Year />
                 </Grid>
                 <Grid item xs={12} sm={12} md={4}>
-                    
+                    <Month />
                 </Grid>
                 <Grid item xs={12} sm={12} md={4}>
                     
                 </Grid>
             </Grid>
             <Grid item xs={6}>
-                {year}
+                {year} / {month} / {day}
             </Grid>
         </Grid>
     )
