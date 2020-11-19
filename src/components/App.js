@@ -1,13 +1,18 @@
 import React, { Component, useState } from 'react';
 import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { getDate } from '../helper';
 import Header from './header';
 
 export function App(){
-    const [test, setTest] = useState('123');
+    let date = getDate();
+    const [year, setYear] = useState(date[0]);
+    const [month, setMonth] = useState(date[1]);
+    const [day, setDay] = useState(date[2]);
     let state = {
-        test,
-        setTest
+        year, setYear,
+        month, setMonth,
+        day, setDay
     }
     return (
         <MainContext.Provider value={state} data-test="app-component">
