@@ -10,10 +10,29 @@ const useStyles = makeStyles({
     padding: {
         paddingLeft: '3px',
         paddingRight: '3px'
-    }
+    },
+    boxMargin: {
+        padding: '6px'
+    },
+    cardBox: {
+        padding: '6px',
+        width: '100%',
+        cursor: 'pointer',
+        '&.selected': {
+            backgroundColor: '#cce8f3'
+        },
+        '&.current': {
+            backgroundColor: '#47c0f1',
+            color: 'white'
+        }
+    },
 });
 
 const getLastDay = (year, month) => {
+    if(month > 11){
+        month = 0;
+        year += 1;
+    }
     let lastDay = new Date(year, month, 0);
     return lastDay.getDate();
 }
@@ -88,6 +107,7 @@ function Day() {
 
 export {
     useStyles,
+    getLastDay,
     getDate,
     Year,
     Month,
