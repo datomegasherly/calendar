@@ -7,6 +7,9 @@ const useStyles = makeStyles({
     selectSize: {
         width: '100%',
     },
+    boxSize: {
+        width: '14.28%'
+    },
     padding: {
         paddingLeft: '3px',
         paddingRight: '3px'
@@ -15,7 +18,7 @@ const useStyles = makeStyles({
         padding: '6px'
     },
     cardBox: {
-        padding: '6px',
+        padding: '4px',
         width: '100%',
         cursor: 'pointer',
         '&.selected': {
@@ -26,6 +29,9 @@ const useStyles = makeStyles({
             color: 'white'
         }
     },
+    smallText: {
+        fontSize: '8pt !important'
+    }
 });
 
 const getLastDay = (year, month) => {
@@ -36,6 +42,28 @@ const getLastDay = (year, month) => {
     let lastDay = new Date(year, month, 0);
     return lastDay.getDate();
 }
+/**
+ * this function will return current day number of the week
+ * @param {string|number} year 
+ * @param {string|number} month 
+ * @param {string|number} day 
+ */
+const getCurrentDay = (year, month, day) => {
+    let currentDay = new Date(year, month-1, day);
+    return currentDay.getDay();
+}
+/**
+ * this variable will set start day of the week ( currently it's sunday )
+ */
+const Days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+];
 
 const getDate = () => {
     let date = new Date();
@@ -108,6 +136,8 @@ function Day() {
 export {
     useStyles,
     getLastDay,
+    getCurrentDay,
+    Days,
     getDate,
     Year,
     Month,
