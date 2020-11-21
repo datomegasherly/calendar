@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
 import { getLastDay, getDate, useStyles } from '../helper';
-import { Grid, Card } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 
 function Calendar() {
     const context = useContext(MainContext);
-    let { year, month, day, setDay } = context;
+    let { year, month, day, setDay, events } = context;
     let currentDate = getDate();
     let lastDay = getLastDay(year, month);
     let days = [];
@@ -20,15 +20,23 @@ function Calendar() {
                 days.map(d => {
                     return (
                         <Grid key={d} className={classes.boxMargin} container item xs={6} sm={4} md={3} lg={2}>
-                            <Card className={classNames(classes.cardBox, 
+                            <Paper elevation={2} className={classNames(classes.cardBox, 
                                 year == currentDate[0] && 
                                 month == currentDate[1] && 
                                 d == currentDate[2] ? 'current' : d == day ? 'selected' : '')}
 
                                 onClick={() => setDay(d)}
                             >
-                                <div>{d}</div>
-                            </Card>
+                                <Typography variant="h6">{d}</Typography>
+                                <Typography color="textSecondary">
+                                    { 
+                                        events && 
+                                        events[`${year}-${month}-${d}`] && 
+                                        events[`${year}-${month}-${d}`].length ?  
+                                            `${events[`${year}-${month}-${d}`].length} Events` : 'No Events'
+                                    }
+                                </Typography>
+                            </Paper>
                         </Grid>
                     )
                 })
