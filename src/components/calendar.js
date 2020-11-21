@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
-import { getLastDay, getDate, useStyles } from '../helper';
+import { getLastDay, getCurrentDay, Days, getDate, useStyles } from '../helper';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 
@@ -14,12 +14,34 @@ function Calendar() {
         days.push(i);
     }
     let classes = useStyles();
+    let startDay = [];
+    for(let i = 0;i <= getCurrentDay(year, month, currentDate[2])-1;i++){
+        startDay.push(i);
+    }
     return (
         <Grid style={{marginTop: '15px'}} container>
             {
+                Days.map(ds => {
+                    return (
+                        <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize)} item>
+                            {ds}
+                        </Grid>
+                    )
+                })
+            }
+            {
+                startDay.map(sd => {
+                    return (
+                        <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize)} item>
+
+                        </Grid>
+                    )
+                })
+            }
+            {
                 days.map(d => {
                     return (
-                        <Grid key={d} className={classes.boxMargin} container item xs={6} sm={4} md={3} lg={2}>
+                        <Grid key={d} className={classNames(classes.boxMargin, classes.boxSize)} item>
                             <Paper elevation={2} className={classNames(classes.cardBox, 
                                 year == currentDate[0] && 
                                 month == currentDate[1] && 
@@ -28,7 +50,10 @@ function Calendar() {
                                 onClick={() => setDay(d)}
                             >
                                 <Typography variant="h6">{d}</Typography>
-                                <Typography color="textSecondary">
+                                <Typography className={classes.smallText}>
+                                    {Days[getCurrentDay(year, month, d)]}
+                                </Typography>
+                                <Typography>
                                     { 
                                         events && 
                                         events[`${year}-${month}-${d}`] && 
