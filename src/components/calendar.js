@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
 import { getLastDay, getCurrentDay, Days, getDate, useStyles } from '../helper';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
 import classNames from 'classnames';
 
 function Calendar() {
@@ -24,7 +24,12 @@ function Calendar() {
                 Days.map(ds => {
                     return (
                         <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize)} item>
-                            {ds}
+                            <Hidden only={['xs', 'sm', 'md']}>
+                                <Typography variant="h6" align="center">{ds}</Typography>
+                            </Hidden>
+                            <Hidden only={['lg', 'xl']}>
+                                <Typography variant="h6" align="center">{ds.toString().slice(0,3)}</Typography>
+                            </Hidden>
                         </Grid>
                     )
                 })
