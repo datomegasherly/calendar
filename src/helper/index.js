@@ -133,6 +133,28 @@ function Day() {
     )
 }
 
+const Modes = [
+    'Daily',
+    'Weekly',
+    'Monthly'
+];
+
+function Mode() {
+    let context = useContext(MainContext);
+    let { mode, setMode } = context;
+    const classes = useStyles();
+    return (
+        <Fragment>
+            <FormHelperText>View Mode</FormHelperText>
+            <Select value={mode} className={classes.selectSize} onChange={(ev) => setMode(ev.target.value)}>
+                {
+                    Modes.map((m, i) => <MenuItem key={i+1} value={i+1}>{m}</MenuItem>)
+                }
+            </Select>
+        </Fragment>
+    )
+}
+
 export {
     useStyles,
     getLastDay,
@@ -141,5 +163,7 @@ export {
     getDate,
     Year,
     Month,
-    Day
+    Day,
+    Modes,
+    Mode
 }
