@@ -9,12 +9,14 @@ export function App(){
     const [year, setYear] = useState(date[0]);
     const [month, setMonth] = useState(date[1]);
     const [day, setDay] = useState(date[2]);
+    const [mode, setMode] = useState(3); // 1=>daily , 2=>weekly, 3=>monthly
     const [events, setEvents] = useState([]);
     let state = {
         year, setYear,
         month, setMonth,
         day, setDay,
-        events, setEvents
+        events, setEvents,
+        mode, setMode
     }
     return (
         <MainContext.Provider value={state} data-test="app-component">
