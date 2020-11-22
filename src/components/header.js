@@ -3,7 +3,7 @@ import MainContext from '../context';
 import { Grid, Button, Box, Hidden } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TodayIcon from '@material-ui/icons/Today';
-import { useStyles, Year, Month, Day, getDate } from '../helper';
+import { useStyles, Year, Month, Day, getDate, Mode } from '../helper';
 
 function updateDate({setYear, setMonth, setDay}) {
     let [ year , month, day ] = getDate();
@@ -19,14 +19,17 @@ function Header() {
     return (
         <Grid container>
             <Grid item container xs={8} sm={9} md={9} lg={10}>
-                <Grid className={classes.padding} item xs={4}>
+                <Grid className={classes.padding} item xs={3}>
                     <Year />
                 </Grid>
-                <Grid className={classes.padding} item xs={4}>
+                <Grid className={classes.padding} item xs={3}>
                     <Month />
                 </Grid>
-                <Grid className={classes.padding} item xs={4}>
+                <Grid className={classes.padding} item xs={3}>
                     <Day />
+                </Grid>
+                <Grid className={classes.padding} item xs={3}>
+                    <Mode />
                 </Grid>
             </Grid>
             <Grid item container xs={4} sm={3} md={3} lg={2} pl={2}>
