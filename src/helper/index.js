@@ -31,6 +31,9 @@ const useStyles = makeStyles({
     },
     smallText: {
         fontSize: '8pt !important'
+    },
+    links: {
+        textDecoration: 'none'
     }
 });
 
