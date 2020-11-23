@@ -1,7 +1,20 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
 import { FormHelperText, Select, MenuItem, makeStyles } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 import { Fragment } from 'react';
+
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+            light: green[400],
+            main: green[600],
+            dark: green[800],
+            contrastText: '#fff',
+        }
+    },
+});
 
 const useStyles = makeStyles({
     selectSize: {
@@ -159,6 +172,7 @@ function Mode() {
 }
 
 export {
+    theme,
     useStyles,
     getLastDay,
     getCurrentDay,
