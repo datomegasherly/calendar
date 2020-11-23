@@ -3,6 +3,7 @@ import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { getDate } from '../helper';
 import Home from './home';
+import Add from './add';
 
 export function App(){
     let date = getDate();
@@ -22,7 +23,8 @@ export function App(){
         <MainContext.Provider value={state} data-test="app-component">
             <Router>
                 <Switch>
-                    <Route exact path="/" component={Home} />
+                    <Route path="/add" component={Add} />
+                    <Route path="/" component={Home} />
                 </Switch>
             </Router>
         </MainContext.Provider>

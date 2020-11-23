@@ -4,6 +4,7 @@ import { Grid, Button, Box, Hidden } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TodayIcon from '@material-ui/icons/Today';
 import { useStyles, Year, Month, Day, getDate, Mode } from '../helper';
+import { Link } from 'react-router-dom';
 
 function updateDate({setYear, setMonth, setDay}) {
     let [ year , month, day ] = getDate();
@@ -39,9 +40,11 @@ function Header() {
                     </Button>
                 </Box>
                 <Box mt={1} width="50%" align="center">
-                    <Button onClick={() => updateDate({setYear, setMonth, setDay})} variant="outlined" color="primary">
-                        <AddIcon /><Hidden only={['xs', 'sm']}> Add</Hidden>
-                    </Button>
+                    <Link to="/add" className={classes.links}>
+                        <Button onClick={() => addToDate()} variant="outlined" color="primary">
+                            <AddIcon /><Hidden only={['xs', 'sm']}> Add</Hidden>
+                        </Button>
+                    </Link>
                 </Box>
             </Grid>
         </Grid>
