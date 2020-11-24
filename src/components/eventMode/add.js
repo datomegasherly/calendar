@@ -1,44 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useStyles, theme } from '../helper';
+import React from 'react';
+import { useStyles, theme } from '../../helper';
 import { Link } from 'react-router-dom';
 import { Button, FormControl, Grid, Input, InputLabel } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import MainContext from '../context';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-function Add(){
-    let [ event, setEvent ] = useState({
-        event: '',
-        year: '',
-        month: '',
-        day: '',
-        full: '',
-        startTime: '',
-        endTime: '' 
-    });
-    const context = useContext(MainContext);
-    let { year, month, day } = context;
-    const handleTimeChange = (date, type) => {
-        switch(type){
-            case 'start':
-                setEvent({startTime: date});
-                break;
-            case 'end':
-                setEvent({endTime: date});
-        }
-    }
-    const handleEventChange = (ev) => {
-        let event = ev.target.value;
-        setEvent({event});
-    }
-    useEffect(() => {
-        let full = `${year}-${month}-${day}`;
-        let startTime = new Date(`${full}T00:00:00`);
-        let endTime = new Date(`${full}T00:00:00`);
-        setEvent({year, month, day, full, startTime, endTime});
-    }, []);
+function Add(props){
+    let { event, handleEventChange, handleTimeChange } = props;
     let classes = useStyles();
     return (
         <ThemeProvider theme={theme}>
