@@ -8,8 +8,13 @@ import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 function Add(props){
-    let { event, handleEventChange, handleTimeChange } = props;
+    let { event, handleEventChange, handleTimeChange, checkEvent } = props;
     let classes = useStyles();
+    let saveEvent = () => {
+        if(checkEvent()){
+            // save event
+        }
+    }
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -23,7 +28,7 @@ function Add(props){
                             </Link>
                         </Grid>
                         <Grid align="right" item xs={8} sm={8} md={6}>
-                            <Button variant="contained" color="primary">
+                            <Button onClick={saveEvent} variant="contained" color="primary">
                                 Save
                             </Button>
                         </Grid>
@@ -32,7 +37,7 @@ function Add(props){
                         <Grid item mt={5} xs={12} className={classes.padding}>
                             <FormControl className={classes.selectSize}>
                                 <InputLabel htmlFor="event">Event Description</InputLabel>
-                                <Input id="event" value={event.event} onChange={handleEventChange} />
+                                <Input id="event" value={event.title || ''} onChange={handleEventChange} />
                             </FormControl>
                         </Grid>
                     </Grid>
