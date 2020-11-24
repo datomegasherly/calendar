@@ -3,7 +3,7 @@ import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { getDate } from '../helper';
 import Home from './home';
-import Add from './add';
+import EventMode from './eventMode';
 
 export function App(){
     let date = getDate();
@@ -23,7 +23,7 @@ export function App(){
         <MainContext.Provider value={state} data-test="app-component">
             <Router>
                 <Switch>
-                    <Route path="/add" component={Add} />
+                    <Route path="/add" component={() => EventMode('add')} />
                     <Route path="/" component={Home} />
                 </Switch>
             </Router>
