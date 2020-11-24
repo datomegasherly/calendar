@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     boxSize: {
         width: '14.28%'
     },
+    marginBottom: {
+        marginBottom: '10px'
+    },
     padding: {
         paddingLeft: '3px',
         paddingRight: '3px'
