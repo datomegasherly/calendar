@@ -41,7 +41,7 @@ function Header() {
                 </Box>
                 <Box mt={1} width="50%" align="center">
                     <Link to="/add" className={classes.links}>
-                        <Button onClick={() => addToDate()} variant="outlined" color="primary">
+                        <Button variant="outlined" color="primary">
                             <AddIcon /><Hidden only={['xs', 'sm']}> Add</Hidden>
                         </Button>
                     </Link>
