@@ -1,8 +1,8 @@
-import { Snackbar } from '@material-ui/core';
-import React, { useContext, useState, useEffect, Fragment } from 'react';
-import MainContext from '../context';
+import { Grid, Snackbar } from '@material-ui/core';
+import React, { useState, useEffect, Fragment } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import Add from './eventMode/add';
+import { Redirect } from 'react-router-dom';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -11,17 +11,21 @@ function Alert(props) {
 function EventMode(propType){
     let [ event, setEvent ] = useState({
         title: '',
-        year: '',
-        month: '',
-        day: '',
-        full: '',
         startTime: '',
         endTime: '',
         error: false,
-        errorTitle: ''
+        errorTitle: '',
+        redirect: false
     });
-    const context = useContext(MainContext);
-    let { year, month, day } = context;
+    /**
+     * Update current state once ( like ComponentDidUpdate )
+     */
+    useEffect(() => {
+        let full = `1900-01-01`;
+        let startTime = new Date(`${full}T00:00:00`);
+        let endTime = new Date(`${full}T00:00:00`);
+        setEvent({...event, startTime, endTime});
+    }, []); // when use [] after useEffect , it will call once
     const checkEvent = (type = 'all', data = false) => {
         let time;
         switch(type){
@@ -80,15 +84,6 @@ function EventMode(propType){
         let title = ev.target.value;
         setEvent({...event, title});
     }
-    /**
-     * Update current state once ( like ComponentDidUpdate )
-     */
-    useEffect(() => {
-        let full = `${year}-${month}-${day}`;
-        let startTime = new Date(`${full}T00:00:00`);
-        let endTime = new Date(`${full}T00:00:00`);
-        setEvent({...event, year, month, day, full, startTime, endTime});
-    }, []); // when use [] after useEffect , it will call once
     let props = {
         event,
         setEvent,
@@ -98,12 +93,15 @@ function EventMode(propType){
     };
     return (
         <Fragment>
+            {
+                event.redirect ? <Redirect to="/" /> : ''
+            }
             <Snackbar open={event.error} onClick={() => setEvent({...event, error: false})}>
                 <Alert severity="error">{event.errorTitle}</Alert>
             </Snackbar>
-        {
-            propType == 'add' ? <Add {...props} /> : ''
-        }
+            {
+                propType == 'add' ? <Add {...props} /> : ''
+            }
         </Fragment>
     )
 }
