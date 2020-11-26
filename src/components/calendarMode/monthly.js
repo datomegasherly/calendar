@@ -6,7 +6,13 @@ import classNames from 'classnames';
 
 function Monthly() {
     const context = useContext(MainContext);
-    let { year, month, day, setDay, events } = context;
+    let { year, month, day, setYear, setMonth, setDay, setMode, events } = context;
+    let changeState = (...date) => {
+        setYear(date[0]);
+        setMonth(date[1]);
+        setDay(date[2]);
+        setMode(1);
+    }
     let currentDate = getDate();
     let lastDay = getLastDay(year, month);
     let days = [];
@@ -63,7 +69,7 @@ function Monthly() {
                                         events && 
                                         events[`${year}-${month}-${d}`] && 
                                         events[`${year}-${month}-${d}`].length ?  
-                                            `${events[`${year}-${month}-${d}`].length} Events` : 'No Events'
+                                            <Grid onClick={() => changeState(year,month,d)}>{events[`${year}-${month}-${d}`].length} Events</Grid> : 'No Events'
                                     }
                                 </Typography>
                             </Paper>
