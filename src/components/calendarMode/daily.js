@@ -11,7 +11,7 @@ import {
     TimelineSeparator, 
     TimelineDot,
     TimelineContent } from '@material-ui/lab';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 function Monthly() {
     const context = useContext(MainContext);
@@ -33,29 +33,32 @@ function Monthly() {
                             events && 
                             events[`${year}-${month}-${day}`] && 
                             events[`${year}-${month}-${day}`].length ?  
-                            <Timeline align="alternate">
-                                <TimelineItem>
-                                    <TimelineOppositeContent>
-                                        <Typography variant="body2" color="textSecondary">
-                                            9:30 am
-                                        </Typography>
-                                    </TimelineOppositeContent>
-                                    <TimelineSeparator>
-                                        <TimelineDot>
-                                            <FastfoodIcon />
-                                        </TimelineDot>
-                                        <TimelineConnector />
-                                    </TimelineSeparator>
-                                    <TimelineContent>
-                                        <Paper elevation={3} className={classes.paper}>
-                                            <Typography variant="h6" component="h1">
-                                            Eat
-                                            </Typography>
-                                            <Typography>Because you need strength</Typography>
-                                        </Paper>
-                                    </TimelineContent>
-                                </TimelineItem>
-                            </Timeline>
+                            events[`${year}-${month}-${day}`].map(event => {
+                                let startTime = `${event.start_time.hour < 10 ? `0${event.start_time.hour}` : event.start_time.hour}:${event.start_time.minute < 10 ? `0${event.start_time.minute}` : event.start_time.minute}`;
+                                let endTime = `${event.end_time.hour < 10 ? `0${event.end_time.hour}` : event.end_time.hour}:${event.end_time.minute < 10 ? `0${event.end_time.minute}` : event.end_time.minute}`;
+                                return (
+                                    <Timeline align="alternate">
+                                        <TimelineItem>
+                                            <TimelineOppositeContent>
+                                                <Typography variant="body2" color="textSecondary" className={classes.padding10}>
+                                                    {startTime} - {endTime}
+                                                </Typography>
+                                            </TimelineOppositeContent>
+                                            <TimelineSeparator>
+                                                <TimelineDot>
+                                                    <AccessTimeIcon />
+                                                </TimelineDot>
+                                                <TimelineConnector />
+                                            </TimelineSeparator>
+                                            <TimelineContent>
+                                                <Paper elevation={3} className={classes.padding10}>
+                                                <Typography>{event.event}</Typography>
+                                                </Paper>
+                                            </TimelineContent>
+                                        </TimelineItem>
+                                    </Timeline>
+                                )
+                            })
                             : 'No Events'
                         }
                     </Typography>
