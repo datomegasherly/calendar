@@ -1,9 +1,10 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { getDate } from '../helper';
+import { getDate, url } from '../helper';
 import Home from './home';
 import EventMode from './eventMode';
+import axios from 'axios';
 
 export function App(){
     let date = getDate();
@@ -19,6 +20,13 @@ export function App(){
         events, setEvents,
         mode, setMode
     }
+    useEffect(() => {
+        axios.get(url).then(function (res) {
+            setEvents(res.data);
+        }).catch(function (error) {
+            throw error;
+        });
+    }, []);
     return (
         <MainContext.Provider value={state} data-test="app-component">
             <Router>
