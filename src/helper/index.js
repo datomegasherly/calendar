@@ -5,6 +5,9 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { Fragment } from 'react';
 
+// base url
+const url = 'http://localhost:2020/api/calendar';
+
 const theme = createMuiTheme({
     palette: {
       primary: {
@@ -177,7 +180,24 @@ function Mode() {
     )
 }
 
+/**
+ * this function will convert json object to form data
+ * @param {object} data 
+ */
+function toFormData(data){
+    let dt = [];
+    Object.keys(data).map(r => {
+        let newData = data[r];
+        if(typeof(data[r]) == 'object'){
+            newData = JSON.stringify(data[r]);
+        }
+        dt.push(`${r}=${newData}`);
+    });
+    return dt.join('&');
+}
+
 export {
+    url,
     theme,
     useStyles,
     getLastDay,
@@ -188,5 +208,6 @@ export {
     Month,
     Day,
     Modes,
-    Mode
+    Mode,
+    toFormData
 }
