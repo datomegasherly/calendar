@@ -3,6 +3,8 @@ import React, { useState, useEffect, Fragment } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import Add from './eventMode/add';
 import { Redirect } from 'react-router-dom';
+import Joi from 'joi';
+import { SpinnerComponent } from 'react-element-spinner';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -15,7 +17,8 @@ function EventMode(propType){
         endTime: '',
         error: false,
         errorTitle: '',
-        redirect: false
+        redirect: false,
+        loading: false
     });
     /**
      * Update current state once ( like ComponentDidUpdate )
@@ -26,31 +29,18 @@ function EventMode(propType){
         let endTime = new Date(`${full}T00:00:00`);
         setEvent({...event, startTime, endTime});
     }, []); // when use [] after useEffect , it will call once
+
     const checkEvent = (type = 'all', data = false) => {
-        let time;
-        switch(type){
-            case 'all':
-                if(!event.title.length){
-                    setEvent({...event, error: true, errorTitle: "Event Description is empty"});
-                    return false;
-                } else {
-                    let start = {hour: event.startTime.getHours(), minute: event.startTime.getMinutes()};
-                    let end = {hour: event.endTime.getHours(), minute: event.endTime.getMinutes()};
-                    if(start.hour == end.hour && start.minute == end.minute){
-                        setEvent({...event, error: true, errorTitle: "Start Time and End Time should not be equal"});
-                        return false;
-                    }
-                }
-            break;
-            case 'checkStartTime':
-                time = {hour: data.getHours(), minute: data.getMinutes()};
-                let eTime = {hour: event.endTime.getHours(), minute: event.endTime.getMinutes()};
-                if(time.hour > eTime.hour || (time.hour == eTime.hour && time.minute >= eTime.minute)) return false;
-            break;
-            case 'checkEndTime':
-                let sTime = {hour: event.startTime.getHours(), minute: event.startTime.getMinutes()};
-                time = {hour: data.getHours(), minute: data.getMinutes()};
-                if(time.hour < sTime.hour || (time.hour == sTime.hour && time.minute <= sTime.minute)) return false;
+        let ev = {title: event.title, startTime: event.startTime, endTime: event.endTime};
+        const schema = Joi.object({
+            title: Joi.string().min(3).max(250).required(),
+            startTime: Joi.date().required(),
+            endTime: Joi.date().greater(Joi.ref('startTime')).required()
+        });
+        const checkValidate = schema.validate(ev);
+        if(checkValidate.error){
+            setEvent({...event, error: true, errorTitle: checkValidate.error.details[0].message});
+            return false;
         }
         return true;
     }
@@ -62,18 +52,10 @@ function EventMode(propType){
     const handleTimeChange = (date, type) => {
         switch(type){
             case 'start':
-                if(checkEvent('checkStartTime', date)){
-                    setEvent({...event, startTime: date});
-                } else {
-                    setEvent({...event, error: true, errorTitle: "Start Time is bigger than End Time"});
-                }
+                setEvent({...event, startTime: date});
                 break;
             case 'end':
-                if(checkEvent('checkEndTime', date)){
-                    setEvent({...event, endTime: date});
-                } else {
-                    setEvent({...event, error: true, errorTitle: "End Time is smaller than Start Time"});
-                }
+                setEvent({...event, endTime: date});
         }
     }
     /**
@@ -93,6 +75,12 @@ function EventMode(propType){
     };
     return (
         <Fragment>
+            <SpinnerComponent 
+                loading={event.loading} 
+                position="global" 
+                backgroundColor="#e8e8e8" 
+                spinnerType="circle-dots-collapse"
+                color="#3578e5" />
             {
                 event.redirect ? <Redirect to="/" /> : ''
             }
