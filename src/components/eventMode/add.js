@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useStyles, theme } from '../../helper';
+import { useStyles, theme, toFormData, url } from '../../helper';
 import { v4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { Button, FormControl, Grid, Input, InputLabel } from '@material-ui/core';
@@ -8,6 +8,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import MainContext from '../../context';
+import axios from 'axios';
 
 function Add(props){
     let { event, setEvent, handleEventChange, handleTimeChange, checkEvent } = props;
@@ -17,7 +18,7 @@ function Add(props){
     /**
      * use async/await function because setEvents ( in context ) will reset eventMode function and it will remove state
      */
-    let saveEvent = async() => {
+    let saveEvent = () => {
         if(checkEvent()){
             let currentEvent = events[`${year}-${month}-${day}`];
             if(!currentEvent){
@@ -26,7 +27,7 @@ function Add(props){
             let start_time = {hour: event.startTime.getHours(), minute: event.startTime.getMinutes()};
             let end_time = {hour: event.endTime.getHours(), minute: event.endTime.getMinutes()};
             let full = `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
-            currentEvent.push({
+            let data = {
                 id: v4(),
                 year,
                 month,
@@ -35,10 +36,27 @@ function Add(props){
                 event: event.title,
                 start_time,
                 end_time
+            };
+            let formData = toFormData(data);
+            setEvent({...event, loading: true});
+            axios({
+                method: 'POST',
+                data: formData,
+                url
+            }).then(async res => {
+                if(res.data.success){
+                    currentEvent.push(data);
+                    await setEvent({...event, redirect: true});
+                    setEvents({...events, [`${year}-${month}-${day}`]: currentEvent}); // add event to selected day
+                    setMode(1); // change mode to daily
+                } else if(res.data.error){
+                    setEvent({...event, error: true, errorTitle: res.data.error});
+                } else {
+                    setEvent({...event, error: true, errorTitle: 'Error when create data'});
+                } 
+            }).catch(err => {
+                setEvent({...event, error: true, errorTitle: err.message});
             });
-            await setEvent({...event, redirect: true});
-            setEvents({...events, [`${year}-${month}-${day}`]: currentEvent}); // add event to selected day
-            setMode(1); // change mode to daily
         }
     }
     return (
