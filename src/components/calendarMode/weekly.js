@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import MainContext from '../../context';
-import { getLastDay, getCurrentDay, Days, getDate, useStyles } from '../../helper';
+import { getLastDay, getCurrentDay, Days, getDate, useStyles, numToStr } from '../../helper';
 import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
 import classNames from 'classnames';
 
@@ -54,6 +54,8 @@ function Weekly() {
             }
             {
                 currentWeekDays.map(d => {
+                    let newDay = numToStr(d);
+                    let newMonth = numToStr(month);
                     return (
                         <Grid key={d} className={classNames(classes.boxMargin, classes.boxSize)} item>
                             <Paper elevation={2} className={classNames(classes.cardBox, 
@@ -70,9 +72,9 @@ function Weekly() {
                                 <Typography>
                                     { 
                                         events && 
-                                        events[`${year}-${month}-${d}`] && 
-                                        events[`${year}-${month}-${d}`].length ?  
-                                            `${events[`${year}-${month}-${d}`].length} Events` : 'No Events'
+                                        events[`${year}-${newMonth}-${newDay}`] && 
+                                        events[`${year}-${newMonth}-${newDay}`].length ?  
+                                            `${events[`${year}-${newMonth}-${newDay}`].length} Events` : 'No Events'
                                     }
                                 </Typography>
                             </Paper>

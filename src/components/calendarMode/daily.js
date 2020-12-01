@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import MainContext from '../../context';
-import { getLastDay, getCurrentDay, Days, getDate, useStyles } from '../../helper';
-import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
+import { getCurrentDay, Days, getDate, useStyles, numToStr } from '../../helper';
+import { Grid, Paper, Typography, Hidden, Button } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import classNames from 'classnames';
 import { 
     Timeline, 
@@ -12,12 +13,15 @@ import {
     TimelineDot,
     TimelineContent } from '@material-ui/lab';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import { Link } from 'react-router-dom';
 
-function Monthly() {
+function Daily() {
     const context = useContext(MainContext);
     let { year, month, day, setDay, events } = context;
     let currentDate = getDate();
     let classes = useStyles();
+    let newDay = numToStr(day);
+    let newMonth = numToStr(month);
     return (
         <Grid style={{marginTop: '15px'}} container>
             <Grid className={classNames(classes.boxMargin, classes.selectSize)} item>
@@ -31,11 +35,11 @@ function Monthly() {
                     <Typography>
                         { 
                             events && 
-                            events[`${year}-${month}-${day}`] && 
-                            events[`${year}-${month}-${day}`].length ?  
-                            events[`${year}-${month}-${day}`].map(event => {
-                                let startTime = `${event.start_time.hour < 10 ? `0${event.start_time.hour}` : event.start_time.hour}:${event.start_time.minute < 10 ? `0${event.start_time.minute}` : event.start_time.minute}`;
-                                let endTime = `${event.end_time.hour < 10 ? `0${event.end_time.hour}` : event.end_time.hour}:${event.end_time.minute < 10 ? `0${event.end_time.minute}` : event.end_time.minute}`;
+                            events[`${year}-${newMonth}-${newDay}`] && 
+                            events[`${year}-${newMonth}-${newDay}`].length ?  
+                            events[`${year}-${newMonth}-${newDay}`].map(event => {
+                                let startTime = `${numToStr(event.start_time.hour)}:${numToStr(event.start_time.minute)}`;
+                                let endTime = `${numToStr(event.end_time.hour)}:${numToStr(event.end_time.minute)}`;
                                 return (
                                     <Timeline align="alternate">
                                         <TimelineItem>
@@ -52,7 +56,16 @@ function Monthly() {
                                             </TimelineSeparator>
                                             <TimelineContent>
                                                 <Paper elevation={3} className={classes.padding10}>
-                                                <Typography>{event.event}</Typography>
+                                                <Typography>
+                                                    <Grid className={classes.floatright}>
+                                                        <Link to={`/edit/${event.id}`} className={classes.links}>
+                                                            <Button variant="outlined" color="primary">
+                                                                <EditIcon /><Hidden only={['xs', 'sm']}> Edit</Hidden>
+                                                            </Button>
+                                                        </Link>    
+                                                    </Grid>
+                                                    <Grid>{event.event}</Grid>
+                                                </Typography>
                                                 </Paper>
                                             </TimelineContent>
                                         </TimelineItem>
@@ -68,4 +81,4 @@ function Monthly() {
     )
 }
 
-export default Monthly;
+export default Daily;
