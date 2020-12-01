@@ -32,6 +32,7 @@ export function App(){
             <Router>
                 <Switch>
                     <Route path="/add" component={() => EventMode('add')} />
+                    <Route path="/edit/:id" component={(prop) => EventMode('edit', prop)} />
                     <Route path="/" component={Home} />
                 </Switch>
             </Router>
