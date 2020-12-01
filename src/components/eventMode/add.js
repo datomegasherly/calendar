@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useStyles, theme, toFormData, url } from '../../helper';
+import { useStyles, theme, toFormData, url, numToStr } from '../../helper';
 import { v4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { Button, FormControl, Grid, Input, InputLabel } from '@material-ui/core';
@@ -15,18 +15,15 @@ function Add(props){
     let context = useContext(MainContext);
     let { year, month, day, events, setEvents, setMode } = context;
     let classes = useStyles();
-    /**
-     * use async/await function because setEvents ( in context ) will reset eventMode function and it will remove state
-     */
     let saveEvent = () => {
         if(checkEvent()){
-            let currentEvent = events[`${year}-${month}-${day}`];
+            let currentEvent = events[`${year}-${numToStr(month)}-${numToStr(day)}`];
             if(!currentEvent){
                 currentEvent = [];
             }
             let start_time = {hour: event.startTime.getHours(), minute: event.startTime.getMinutes()};
             let end_time = {hour: event.endTime.getHours(), minute: event.endTime.getMinutes()};
-            let full = `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
+            let full = `${year}-${numToStr(month)}-${numToStr(day)}`;
             let data = {
                 id: v4(),
                 year,
@@ -43,11 +40,14 @@ function Add(props){
                 method: 'POST',
                 data: formData,
                 url
+                /**
+                 * use async/await function because setEvents ( in context ) will reset eventMode function and it will remove state
+                 */
             }).then(async res => {
                 if(res.data.success){
                     currentEvent.push(data);
                     await setEvent({...event, redirect: true});
-                    setEvents({...events, [`${year}-${month}-${day}`]: currentEvent}); // add event to selected day
+                    setEvents({...events, [`${year}-${numToStr(month)}-${numToStr(day)}`]: currentEvent}); // add event to selected day
                     setMode(1); // change mode to daily
                 } else if(res.data.error){
                     setEvent({...event, error: true, errorTitle: res.data.error});
