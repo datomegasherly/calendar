@@ -56,6 +56,10 @@ const useStyles = makeStyles({
     },
     links: {
         textDecoration: 'none'
+    },
+    floatright: {
+        marginTop: '-5px',
+        float: 'right'
     }
 });
 
@@ -196,6 +200,14 @@ function toFormData(data){
     return dt.join('&');
 }
 
+/**
+ * this function will add 0 to start of number that is below 10
+ * @param {Number} num
+ */
+function numToStr(num){
+    return num < 10 ? `0${num}` : num;
+}
+
 export {
     url,
     theme,
@@ -209,5 +221,6 @@ export {
     Day,
     Modes,
     Mode,
-    toFormData
+    toFormData,
+    numToStr
 }
