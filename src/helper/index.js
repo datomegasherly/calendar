@@ -60,6 +60,9 @@ const useStyles = makeStyles({
     floatright: {
         marginTop: '-5px',
         float: 'right'
+    },
+    marginRight: {
+        marginRight: '5px'
     }
 });
 
