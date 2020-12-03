@@ -7,6 +7,7 @@ import { Fragment } from 'react';
 
 // base url
 const url = 'http://localhost:2020/api/calendar';
+const configUrl = 'http://localhost:2020/api/config';
 
 const theme = createMuiTheme({
     palette: {
@@ -213,6 +214,7 @@ function numToStr(num){
 
 export {
     url,
+    configUrl,
     theme,
     useStyles,
     getLastDay,
