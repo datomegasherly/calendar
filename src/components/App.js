@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { getDate, url } from '../helper';
+import { getDate, url, configUrl } from '../helper';
 import Home from './home';
 import EventMode from './eventMode';
 import axios from 'axios';
@@ -23,6 +23,17 @@ export function App(){
     useEffect(() => {
         axios.get(url).then(function (res) {
             setEvents(res.data);
+        }).catch(function (error) {
+            throw error;
+        });
+        axios.get(configUrl).then(function (res) {
+            let date = new Date(res.data.date);
+            let y = date.getFullYear();
+            let m = date.getMonth() + 1;
+            let d = date.getDate();
+            setYear(y);
+            setMonth(m);
+            setDay(d);
         }).catch(function (error) {
             throw error;
         });
