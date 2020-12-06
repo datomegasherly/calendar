@@ -63,15 +63,17 @@ export function App(){
         hookAction.effectCall(dispatcher);
     }, []);
     return (
-        <MainContext.Provider value={newState} data-test="app-component">
-            <Router>
-                <Switch>
-                    <Route path="/add" component={() => EventMode('add')} />
-                    <Route path="/edit/:id" component={(prop) => EventMode('edit', prop)} />
-                    <Route path="/" component={Home} />
-                </Switch>
-            </Router>
-        </MainContext.Provider>
+        <div data-test="app-component">
+            <MainContext.Provider value={newState}>
+                <Router>
+                    <Switch>
+                        <Route path="/add" component={() => EventMode('add')} />
+                        <Route path="/edit/:id" component={(prop) => EventMode('edit', prop)} />
+                        <Route path="/" component={Home} />
+                    </Switch>
+                </Router>
+            </MainContext.Provider>
+        </div>
     )
 }
 

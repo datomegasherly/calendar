@@ -6,21 +6,23 @@ import hookAction from '../components/actions';
 
 const mockEffectCall = jest.fn();
 
-const setupShallow = () => {
-    return shallow(<App  />);
-}
-
 const setup = () => {
     mockEffectCall.mockClear();
     hookAction.effectCall = mockEffectCall;
+
+    const mockUseReducer = jest.fn().mockReturnValue([
+        { },
+        jest.fn()
+    ]);
+    React.useReducer = mockUseReducer;
     return mount(<App  />);
 }
 
 describe('App Component :', () => {
     test('render App', () => {
-        let wrapper = setupShallow();
-        let AppComponent = getByAttr(wrapper, 'app-component');
-        expect(AppComponent.length).toBe(1);
+        let wrapper = setup();
+        const appComponent = getByAttr(wrapper, 'app-component');
+        expect(appComponent.exists()).toBe(true);
     });
 });
 
