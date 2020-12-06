@@ -1,11 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import App from './app';
 import { getByAttr } from '../../test/testUtil';
-import { getDate } from '../helper';
+import hookAction from '../components/actions';
+
+const mockEffectCall = jest.fn();
 
 const setup = () => {
-    return shallow(<App />);
+    mockEffectCall.mockClear();
+    hookAction.effectCall = mockEffectCall;
+    return mount(<App  />);
 }
 
 describe('App Component :', () => {
@@ -16,11 +20,14 @@ describe('App Component :', () => {
 });
 
 describe('state control of useEffect', () => {
-    test('update year, month and day when useEffect call', () => {
-        const mockSetState = jest.fn();
-        //let date = getDate();
-        React.useState = jest.fn(() => ["", mockSetState]);
-        jest.spyOn(React, 'useEffect').mockImplementation(f => jest.fn());
+    test('call effectCall on useEffect', () => { 
+        setup();
+        expect(mockEffectCall).toHaveBeenCalled();
+    });
+    test('effectCall should not called again in app update', () => {
         const wrapper = setup();
+        mockEffectCall.mockClear();
+        wrapper.setProps(); // instead of wrapper update() because it will not trigger update()
+        expect(mockEffectCall).not.toHaveBeenCalled();
     });
 });
