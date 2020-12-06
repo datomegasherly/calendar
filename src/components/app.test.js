@@ -6,6 +6,10 @@ import hookAction from '../components/actions';
 
 const mockEffectCall = jest.fn();
 
+const setupShallow = () => {
+    return shallow(<App  />);
+}
+
 const setup = () => {
     mockEffectCall.mockClear();
     hookAction.effectCall = mockEffectCall;
@@ -14,8 +18,9 @@ const setup = () => {
 
 describe('App Component :', () => {
     test('render App', () => {
-        let wrapper = setup();
-        let Component = getByAttr(wrapper, 'app-component');
+        let wrapper = setupShallow();
+        let AppComponent = getByAttr(wrapper, 'app-component');
+        expect(AppComponent.length).toBe(1);
     });
 });
 
