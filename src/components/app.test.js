@@ -27,7 +27,7 @@ describe('state control of useEffect', () => {
     test('effectCall should not called again in app update', () => {
         const wrapper = setup();
         mockEffectCall.mockClear();
-        wrapper.setProps(); // instead of wrapper update() because it will not trigger update()
+        wrapper.update(); // it change , because update is called in enzyme current version ( previously was not call )
         expect(mockEffectCall).not.toHaveBeenCalled();
     });
 });
