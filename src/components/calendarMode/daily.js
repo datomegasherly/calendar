@@ -30,7 +30,8 @@ import axios from 'axios';
 
 function Daily() {
     const context = useContext(MainContext);
-    let { year, month, day, setDay, events, setEvents } = context;
+    let { year, month, day, events } = context.state;
+    let { setEvents } = context.dispatch;
     let [open, setOpen] = useState(false);
     let [ selectedId, setSelectedId ] = useState(false);
     let [ error, setError ] = useState(false);

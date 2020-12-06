@@ -6,7 +6,8 @@ import classNames from 'classnames';
 
 function Weekly() {
     const context = useContext(MainContext);
-    let { year, month, day, setDay, events } = context;
+    let { year, month, day, events } = context.state;
+    let { setDay } = context.dispatch;
     let currentDate = getDate();
     let lastDay = getLastDay(year, month);
     let days = [];

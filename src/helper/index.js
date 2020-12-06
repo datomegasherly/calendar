@@ -68,7 +68,7 @@ const useStyles = makeStyles({
 });
 
 const getLastDay = (year, month) => {
-    if(month > 11){
+    if(month > 12){
         month = 0;
         year += 1;
     }
@@ -106,7 +106,7 @@ const getDate = () => {
 
 function Year() {
     let context = useContext(MainContext);
-    let { year, setYear } = context;
+    let { year, setYear } = context.state;
     let [y, m, d] = getDate();
     const classes = useStyles();
     let years = [];
@@ -127,7 +127,8 @@ function Year() {
 
 function Month() {
     let context = useContext(MainContext);
-    let { month, setMonth, setDay } = context;
+    let { month } = context.state;
+    let { setMonth, setDay } = context.dispatch;
     const classes = useStyles();
     let months = [];
     for(let i = 1;i <= 12;i++){
@@ -147,7 +148,8 @@ function Month() {
 
 function Day() {
     let context = useContext(MainContext);
-    let { day, setDay, month, year } = context;
+    let { day, month, year } = context.state;
+    let { setDay } = context.dispatch;
     const classes = useStyles();
     let days = [];
     let lastDay = getLastDay(year, month);
@@ -174,7 +176,8 @@ const Modes = [
 
 function Mode() {
     let context = useContext(MainContext);
-    let { mode, setMode } = context;
+    let { mode } = context.state;
+    let { setMode } = context.dispatch;
     const classes = useStyles();
     return (
         <Fragment>

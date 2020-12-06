@@ -13,7 +13,8 @@ import axios from 'axios';
 function Add(props){
     let { event, setEvent, handleEventChange, handleTimeChange, checkEvent } = props;
     let context = useContext(MainContext);
-    let { year, month, day, events, setEvents, setMode } = context;
+    let { year, month, day, events } = context.state;
+    let { setEvents, setMode } = context.dispatch;
     let classes = useStyles();
     let saveEvent = () => {
         if(checkEvent()){

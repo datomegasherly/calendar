@@ -25,7 +25,8 @@ function EventMode(propType, prop){
         loading: false,
         dataIsLoaded: false // this variable use in edit mode and will ignore useEffect call when dataIsLoaded is true
     });
-    let { events, year, month, day } = useContext(MainContext);
+    let context = useContext(MainContext);
+    let { events, year, month, day } = context.state;
     /**
      * Update current state once ( like ComponentDidUpdate )
      */

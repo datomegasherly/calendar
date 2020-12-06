@@ -7,7 +7,7 @@ import { Typography, Box } from '@material-ui/core';
 
 function Calendar() {
     const context = useContext(MainContext);
-    let { mode } = context;
+    let { mode } = context.state;
     switch(mode){
         case 1:
             return <Daily />

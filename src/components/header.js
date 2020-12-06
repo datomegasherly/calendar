@@ -15,7 +15,8 @@ function updateDate({setYear, setMonth, setDay}) {
 
 function Header() {
     let context = useContext(MainContext);
-    let { year, month, day, setYear, setMonth, setDay } = context;
+    let { year, month, day, mode } = context.state;
+    let { setYear, setMonth, setDay } = context.dispatch;
     let classes = useStyles();
     return (
         <Grid container>

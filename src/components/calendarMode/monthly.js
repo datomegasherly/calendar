@@ -6,7 +6,8 @@ import classNames from 'classnames';
 
 function Monthly() {
     const context = useContext(MainContext);
-    let { year, month, day, setYear, setMonth, setDay, setMode, events } = context;
+    let { year, month, day, events } = context.state;
+    let { setYear, setMonth, setDay, setMode } = context.dispatch;
     let changeState = (...date) => {
         setYear(date[0]);
         setMonth(date[1]);
@@ -21,7 +22,7 @@ function Monthly() {
     }
     let classes = useStyles();
     let startDay = [];
-    for(let i = 0;i <= getCurrentDay(year, month, currentDate[2])-1;i++){
+    for(let i = 0;i <= getCurrentDay(year, month, 1)-1;i++){
         startDay.push(i);
     }
     return (
