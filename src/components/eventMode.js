@@ -8,6 +8,7 @@ import Joi from 'joi';
 import { SpinnerComponent } from 'react-element-spinner';
 import MainContext from '../context';
 import { numToStr } from '../helper';
+import propTypes from 'prop-types';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -138,6 +139,11 @@ function EventMode(propType, prop){
             }
         </Fragment>
     )
+}
+
+EventMode.propTypes = {
+    propType: propTypes.string.isRequired,
+    prop: propTypes.object.isRequired
 }
 
 export default EventMode;

@@ -34,4 +34,10 @@ describe('test switch between monthly / weekly / daily on change mode', () => {
         const dailyComponent = getByAttr(wrapper, 'daily-component');
         expect(dailyComponent.length).toBe(1);
     });
+    test('switch to no view when context mode is not (1,2,3)', () => {
+        React.useContext = jest.fn(() => ({state: {mode: 4}}));
+        const wrapper = setup();
+        const dailyComponent = getByAttr(wrapper, 'noview-component');
+        expect(dailyComponent.length).toBe(1);
+    });
 });
