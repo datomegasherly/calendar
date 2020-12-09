@@ -6,8 +6,8 @@ import { green } from '@material-ui/core/colors';
 import { Fragment } from 'react';
 
 // base url
-const url = 'http://localhost:2020/api/calendar';
-const configUrl = 'http://localhost:2020/api/config';
+const url = 'http://79.175.134.211:2020/api/calendar'; // change to your server
+const configUrl = 'http://79.175.134.211:2020/api/config'; // change to your server
 
 const theme = createMuiTheme({
     palette: {
