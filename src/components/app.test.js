@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import App from './app';
+import App from './App';
 import { getByAttr } from '../../test/testUtil';
-import hookAction from '../components/actions';
+import hookAction from './actions';
 
 const mockEffectCall = jest.fn();
 
