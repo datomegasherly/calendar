@@ -16,9 +16,14 @@ function Monthly() {
     for(let i = 0;i <= getCurrentDay(year, month, 1)-1;i++){
         startDay.push(i);
     }
+    let lastDayOfMonth = getCurrentDay(year, month, lastDay);
+    let endDay = [];
+    for(let i = 0;i < 6 - lastDayOfMonth;i++){
+        endDay.push(i);
+    }
     return (
         <Grid style={{marginTop: '15px'}} container>
-            { dayBox({startDay, endDay: [], days, Days}) }
+            { dayBox({startDay, endDay, days, Days}) }
         </Grid>
     )
 }
