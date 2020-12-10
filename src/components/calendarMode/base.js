@@ -4,8 +4,35 @@
 import React, { Fragment, useContext } from 'react';
 import MainContext from '../../context';
 import classNames from 'classnames';
-import { useStyles, getDate, getCurrentDay, numToStr } from '../../helper';
+import { useStyles, getDate, getLastDay, getCurrentDay, numToStr } from '../../helper';
 import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
+
+// this function will return boxGrid
+const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYear, pMonth, pDay, type}) => {
+    return (
+        <Grid key={pDay} className={classNames(classes.boxMargin, classes.boxSize)} item>
+            <Paper elevation={2} className={classNames(classes.cardBox, type=='notcurrent' ? classes.grayBox : '', 
+                pYear == currentDate[0] && 
+                pMonth == currentDate[1] && 
+                pDay == currentDate[2] ? 'current' : (pYear == context.state.year && pMonth == context.state.month && pDay == context.state.day) ? 'selected' : '')}
+                onClick={() => update(pYear, pMonth, pDay)}
+            >
+                <Typography variant="h6">{pDay}</Typography>
+                <Typography className={classes.smallText}>
+                    {Days[getCurrentDay(pYear, pMonth, pDay)]}
+                </Typography>
+                <Typography>
+                    { 
+                        context.state.events && 
+                        context.state.events[`${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`] && 
+                        context.state.events[`${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`].length ?  
+                            <Grid onClick={() => changeState(pYear,pMonth,pDay)}>{context.state.events[`${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`].length} Events</Grid> : 'No Events'
+                    }
+                </Typography>
+            </Paper>
+        </Grid>
+    )
+}
 
 const dayBox = ({startDay, endDay, days, Days}) => {
     const context = useContext(MainContext);
@@ -13,11 +40,23 @@ const dayBox = ({startDay, endDay, days, Days}) => {
     let { setYear, setMonth, setDay, setMode } = context.dispatch;
     let currentDate = getDate();
     let classes = useStyles();
+    let lastPrevDay = getLastDay(month-1 <= 0 ? year-1 : year, month-1 <= 0 ? 12 : month-1);
+    lastPrevDay -= startDay.length;
+    let prevYear = month-1 <= 0 ? year-1 : year;
+    let prevMonth = month-1 <= 0 ? 12 : month-1;
+    let nextYear = month+1 > 12 ? year+1 : year;
+    let nextMonth = month+1 > 12 ? 1 : month+1;
+    let nextSd = 0;
     let changeState = (...date) => {
         setYear(date[0]);
         setMonth(date[1]);
         setDay(date[2]);
         setMode(1);
+    }
+    let setPrevNext = (pYear, pMonth, pDay) => {
+        setYear(pYear);
+        setMonth(pMonth);
+        setDay(pDay);
     }
     return (
         <Fragment>
@@ -37,50 +76,20 @@ const dayBox = ({startDay, endDay, days, Days}) => {
             }
             {
                 startDay.map(sd => {
-                    return (
-                        <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize)} item>
-
-                        </Grid>
-                    )
+                    let prevSd = lastPrevDay + 1;
+                    lastPrevDay++;
+                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: prevYear, pMonth: prevMonth, pDay: prevSd, type: 'notcurrent'});
                 })
             }
             {
                 days.map(d => {
-                    let newDay = numToStr(d);
-                    let newMonth = numToStr(month);
-                    return (
-                        <Grid key={d} className={classNames(classes.boxMargin, classes.boxSize)} item>
-                            <Paper elevation={2} className={classNames(classes.cardBox, 
-                                year == currentDate[0] && 
-                                month == currentDate[1] && 
-                                d == currentDate[2] ? 'current' : d == day ? 'selected' : '')}
-
-                                onClick={() => setDay(d)}
-                            >
-                                <Typography variant="h6">{d}</Typography>
-                                <Typography className={classes.smallText}>
-                                    {Days[getCurrentDay(year, month, d)]}
-                                </Typography>
-                                <Typography>
-                                    { 
-                                        events && 
-                                        events[`${year}-${newMonth}-${newDay}`] && 
-                                        events[`${year}-${newMonth}-${newDay}`].length ?  
-                                            <Grid onClick={() => changeState(year,month,d)}>{events[`${year}-${newMonth}-${newDay}`].length} Events</Grid> : 'No Events'
-                                    }
-                                </Typography>
-                            </Paper>
-                        </Grid>
-                    )
+                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: year, pMonth: month, pDay: d, type: 'current'});
                 })
             }
             {
                 endDay.map(ed => {
-                    return (
-                        <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize)} item>
-
-                        </Grid>
-                    )
+                    nextSd += 1;
+                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: nextYear, pMonth: nextMonth, pDay: nextSd, type: 'notcurrent'});
                 })
             }
         </Fragment>
