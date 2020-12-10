@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { getDate, url, configUrl } from '../helper';
 import Home from './home';
 import EventMode from './eventMode';
-import hookAction from '../components/actions';
+import hookAction from './actions';
 
 /**
  * reducer for update state in dispatch
