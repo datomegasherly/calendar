@@ -64,6 +64,10 @@ const useStyles = makeStyles({
     },
     marginRight: {
         marginRight: '5px'
+    },
+    grayBox: {
+        backgroundColor: '#efefef',
+        color: '#ababab'
     }
 });
 
@@ -106,7 +110,8 @@ const getDate = () => {
 
 function Year() {
     let context = useContext(MainContext);
-    let { year, setYear } = context.state;
+    let { year } = context.state;
+    let { setYear } = context.dispatch;
     let [y, m, d] = getDate();
     const classes = useStyles();
     let years = [];
