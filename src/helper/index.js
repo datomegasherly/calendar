@@ -6,8 +6,9 @@ import { green } from '@material-ui/core/colors';
 import { Fragment } from 'react';
 
 // base url
-const url = 'http://79.175.134.211:2020/api/calendar'; // change to your server
-const configUrl = 'http://79.175.134.211:2020/api/config'; // change to your server
+const api = 'https://magic-ops.com/calendar/api'; // change to your server url
+const uri = `${api}/calendar`;
+const configUri = `${api}/config`;
 
 const theme = createMuiTheme({
     palette: {
@@ -221,8 +222,8 @@ function numToStr(num){
 }
 
 export {
-    url,
-    configUrl,
+    uri,
+    configUri,
     theme,
     useStyles,
     getLastDay,

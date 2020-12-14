@@ -1,15 +1,15 @@
 import React from 'react';
-import { url, configUrl } from '../../helper';
+import { uri, configUri } from '../../helper';
 import axios from 'axios';
 
 function effectCall(dispatch) {
     let { setEvents, setYear, setMonth, setDay } = dispatch;
-    axios.get(url).then(function (res) {
+    axios.get(uri).then(function (res) {
         setEvents(res.data);
     }).catch(function (error) {
         throw error;
     });
-    axios.get(configUrl).then(function (res) {
+    axios.get(configUri).then(function (res) {
         let date = new Date(res.data.date);
         let y = date.getFullYear();
         let m = date.getMonth() + 1;
