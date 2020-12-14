@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import MainContext from '../context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { getDate, url, configUrl } from '../helper';
+import { getDate } from '../helper';
 import Home from './home';
 import EventMode from './eventMode';
 import hookAction from './actions';

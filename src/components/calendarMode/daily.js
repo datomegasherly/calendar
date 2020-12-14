@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useState } from 'react';
 import MainContext from '../../context';
-import { getCurrentDay, Days, getDate, useStyles, url, toFormData, numToStr } from '../../helper';
+import { getCurrentDay, Days, getDate, useStyles, uri, toFormData, numToStr } from '../../helper';
 import { 
     Grid, 
     Paper, 
@@ -55,7 +55,7 @@ function Daily() {
             axios({
                 method: 'DELETE',
                 data: {},
-                url: `${url}/${currentEvent.full}/${currentEvent.id}`
+                url: `${uri}/${currentEvent.full}/${currentEvent.id}`
                 /**
                  * use async/await function because setEvents ( in context ) will reset eventMode function and it will remove state
                  */

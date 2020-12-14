@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useStyles, theme, toFormData, url, numToStr } from '../../helper';
+import { useStyles, theme, toFormData, uri, numToStr } from '../../helper';
 import { Link } from 'react-router-dom';
 import { Button, FormControl, Grid, Input, InputLabel } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -46,7 +46,7 @@ function Edit(props){
             axios({
                 method: 'PUT',
                 data: formData,
-                url
+                url: uri,
                 /**
                  * use async/await function because setEvents ( in context ) will reset eventMode function and it will remove state
                  */
