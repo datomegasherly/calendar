@@ -1,14 +1,9 @@
 import React from 'react';
-import { uri, configUri } from '../../helper';
 import axios from 'axios';
+import { configUri, updateData } from '../../helper';
 
 function effectCall(dispatch) {
-    let { setEvents, setYear, setMonth, setDay } = dispatch;
-    axios.get(uri).then(function (res) {
-        setEvents(res.data);
-    }).catch(function (error) {
-        throw error;
-    });
+    let { setYear, setMonth, setDay } = dispatch;
     axios.get(configUri).then(function (res) {
         let date = new Date(res.data.date);
         let y = date.getFullYear();
@@ -17,6 +12,7 @@ function effectCall(dispatch) {
         setYear(y);
         setMonth(m);
         setDay(d);
+        updateData(dispatch, y, m);
     }).catch(function (error) {
         throw error;
     });
