@@ -43,15 +43,15 @@ function Daily() {
     let newDay = numToStr(day);
     let newMonth = numToStr(month);
     const removeCalendar = (id) => {
-        if(events[full] && events[full].find(r => r.id == id)){
+        if(events && events.find(r => r.id == id)){
             setOpen(true);
             setSelectedId(id);
         }
     }
     const removeCalendarSet = async() => {
         let id = selectedId;
-        if(id && events[full] && events[full].find(r => r.id == id)){
-            let currentEvent = events[full].find(r => r.id == id);
+        if(id && events && events.find(r => r.id == id)){
+            let currentEvent = events.find(r => r.id == id);
             axios({
                 method: 'DELETE',
                 data: {},
@@ -61,8 +61,8 @@ function Daily() {
                  */
             }).then(async res => {
                 if(res.data.success){
-                    let newEvents = events[full].filter(r => r.id != id);
-                    setEvents({...events, [full] : newEvents});
+                    events = events.filter(r => r.id != id);
+                    setEvents(events);
                     setError(true);
                     setErrorSeverity('success');
                     setErrorTitle('selected event delete completed');
@@ -122,47 +122,46 @@ function Daily() {
                         <Typography>
                             { 
                                 events && 
-                                events[`${year}-${newMonth}-${newDay}`] && 
-                                events[`${year}-${newMonth}-${newDay}`].length ?  
-                                events[`${year}-${newMonth}-${newDay}`].map(event => {
-                                    let startTime = `${numToStr(event.start_time.hour)}:${numToStr(event.start_time.minute)}`;
-                                    let endTime = `${numToStr(event.end_time.hour)}:${numToStr(event.end_time.minute)}`;
-                                    return (
-                                        <Timeline align="alternate">
-                                            <TimelineItem>
-                                                <TimelineOppositeContent>
-                                                    <Typography variant="body2" color="textSecondary" className={classes.padding10}>
-                                                        {startTime} - {endTime}
-                                                    </Typography>
-                                                </TimelineOppositeContent>
-                                                <TimelineSeparator>
-                                                    <TimelineDot>
-                                                        <AccessTimeIcon />
-                                                    </TimelineDot>
-                                                    <TimelineConnector />
-                                                </TimelineSeparator>
-                                                <TimelineContent>
-                                                    <Paper elevation={3} className={classes.padding10}>
-                                                    <Typography>
-                                                        <Grid className={classes.floatright}>
-                                                            <Button className={classes.marginRight} onClick={() => removeCalendar(event.id)} variant="outlined" color="secondary">
-                                                                <EditIcon /><Hidden only={['xs', 'sm']}> Delete</Hidden>
-                                                            </Button>
-                                                            <Link to={`/edit/${event.id}`} className={classes.links}>
-                                                                <Button variant="outlined" color="primary">
-                                                                    <EditIcon /><Hidden only={['xs', 'sm']}> Edit</Hidden>
+                                events.map(event => {
+                                    if(event.full == `${year}-${newMonth}-${newDay}`){
+                                        let startTime = `${numToStr(event.start_time.hour)}:${numToStr(event.start_time.minute)}`;
+                                        let endTime = `${numToStr(event.end_time.hour)}:${numToStr(event.end_time.minute)}`;
+                                        return (
+                                            <Timeline align="alternate">
+                                                <TimelineItem>
+                                                    <TimelineOppositeContent>
+                                                        <Typography variant="body2" color="textSecondary" className={classes.padding10}>
+                                                            {startTime} - {endTime}
+                                                        </Typography>
+                                                    </TimelineOppositeContent>
+                                                    <TimelineSeparator>
+                                                        <TimelineDot>
+                                                            <AccessTimeIcon />
+                                                        </TimelineDot>
+                                                        <TimelineConnector />
+                                                    </TimelineSeparator>
+                                                    <TimelineContent>
+                                                        <Paper elevation={3} className={classes.padding10}>
+                                                        <Typography>
+                                                            <Grid className={classes.floatright}>
+                                                                <Button className={classes.marginRight} onClick={() => removeCalendar(event.id)} variant="outlined" color="secondary">
+                                                                    <EditIcon /><Hidden only={['xs', 'sm']}> Delete</Hidden>
                                                                 </Button>
-                                                            </Link>
-                                                        </Grid>
-                                                        <Grid>{event.event}</Grid>
-                                                    </Typography>
-                                                    </Paper>
-                                                </TimelineContent>
-                                            </TimelineItem>
-                                        </Timeline>
-                                    )
+                                                                <Link to={`/edit/${event.id}`} className={classes.links}>
+                                                                    <Button variant="outlined" color="primary">
+                                                                        <EditIcon /><Hidden only={['xs', 'sm']}> Edit</Hidden>
+                                                                    </Button>
+                                                                </Link>
+                                                            </Grid>
+                                                            <Grid>{event.event}</Grid>
+                                                        </Typography>
+                                                        </Paper>
+                                                    </TimelineContent>
+                                                </TimelineItem>
+                                            </Timeline>
+                                        )
+                                    }
                                 })
-                                : 'No Events'
                             }
                         </Typography>
                     </Paper>

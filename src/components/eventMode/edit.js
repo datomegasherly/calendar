@@ -18,13 +18,9 @@ function Edit(props){
 
     let editEvent = () => {
         if(checkEvent()){
-            let currentEvent = events[`${year}-${numToStr(month)}-${numToStr(day)}`];
+            let currentEvent = events.find(ev => ev.full == `${year}-${numToStr(month)}-${numToStr(day)}`);
             let id = event.id;
             if(!currentEvent){
-                setEvent({redirect: true});
-                return;
-            }
-            if(!currentEvent.find(r => r.id == id)){
                 setEvent({redirect: true});
                 return;
             }
@@ -52,7 +48,7 @@ function Edit(props){
                  */
             }).then(async res => {
                 if(res.data.success){
-                    currentEvent.map(r => {
+                    events.map(r => {
                         if(r.id == id){
                             r.event = event.title,
                             r.start_time = start_time;
@@ -60,7 +56,7 @@ function Edit(props){
                         }
                     });
                     await setEvent({...event, redirect: true});
-                    setEvents({...events, [`${year}-${numToStr(month)}-${numToStr(day)}`]: currentEvent}); // add event to selected day
+                    setEvents(events); // add event to selected day
                     setMode(1); // change mode to daily
                 } else if(res.data.error){
                     setEvent({...event, error: true, errorTitle: res.data.error});

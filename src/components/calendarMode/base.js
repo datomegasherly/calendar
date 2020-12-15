@@ -9,6 +9,7 @@ import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
 
 // this function will return boxGrid
 const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYear, pMonth, pDay, type}) => {
+    let currentDayEventCount = context.state.events.filter(event => event.full == `${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`).length;
     return (
         <Grid key={pDay} className={classNames(classes.boxMargin, classes.boxSize)} item>
             <Paper elevation={2} className={classNames(classes.cardBox, type=='notcurrent' ? classes.grayBox : '', 
@@ -22,11 +23,9 @@ const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYea
                     {Days[getCurrentDay(pYear, pMonth, pDay)]}
                 </Typography>
                 <Typography>
-                    { 
-                        context.state.events && 
-                        context.state.events[`${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`] && 
-                        context.state.events[`${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`].length ?  
-                            <Grid onClick={() => changeState(pYear,pMonth,pDay)}>{context.state.events[`${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`].length} Events</Grid> : 'No Events'
+                    {
+                        currentDayEventCount ?  
+                        <Grid onClick={() => changeState(pYear,pMonth,pDay)}>{currentDayEventCount} Events</Grid> : 'No Events'
                     }
                 </Typography>
             </Paper>

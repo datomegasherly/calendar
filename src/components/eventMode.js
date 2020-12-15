@@ -50,8 +50,8 @@ function EventMode(propType, prop){
             let newMonth = numToStr(month);
             let id = prop.match.params.id;
             let full = `${year}-${newMonth}-${newDay}`;
-            if(events && events[full]){
-                let data = events[full].find(r => r.id == id);
+            if(events){
+                let data = events.find(r => r.id == id);
                 if(data){
                     let startTime = new Date(`${full}T${numToStr(data.start_time.hour)}:${numToStr(data.start_time.minute)}:00`);
                     let endTime = new Date(`${full}T${numToStr(data.end_time.hour)}:${numToStr(data.end_time.minute)}:00`);

@@ -18,10 +18,6 @@ function Add(props){
     let classes = useStyles();
     let saveEvent = () => {
         if(checkEvent()){
-            let currentEvent = events[`${year}-${numToStr(month)}-${numToStr(day)}`];
-            if(!currentEvent){
-                currentEvent = [];
-            }
             let start_time = {hour: event.startTime.getHours(), minute: event.startTime.getMinutes()};
             let end_time = {hour: event.endTime.getHours(), minute: event.endTime.getMinutes()};
             let full = `${year}-${numToStr(month)}-${numToStr(day)}`;
@@ -46,9 +42,9 @@ function Add(props){
                  */
             }).then(async res => {
                 if(res.data.success){
-                    currentEvent.push(data);
+                    events.push(data);
                     await setEvent({...event, redirect: true});
-                    setEvents({...events, [`${year}-${numToStr(month)}-${numToStr(day)}`]: currentEvent}); // add event to selected day
+                    setEvents(events); // add event to selected day
                     setMode(1); // change mode to daily
                 } else if(res.data.error){
                     setEvent({...event, error: true, errorTitle: res.data.error});
