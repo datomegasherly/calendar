@@ -4,8 +4,10 @@ import { FormHelperText, Select, MenuItem, makeStyles } from '@material-ui/core'
 import { createMuiTheme } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { Fragment } from 'react';
+import axios from 'axios';
 
 // base url
+/** use http://localhost:8001/calendar/api to test in local */
 const api = 'https://magic-ops.com/calendar/api'; // change to your server url
 const uri = `${api}/calendar`;
 const configUri = `${api}/config`;
@@ -111,7 +113,7 @@ const getDate = () => {
 
 function Year() {
     let context = useContext(MainContext);
-    let { year } = context.state;
+    let { year, month } = context.state;
     let { setYear } = context.dispatch;
     let [y, m, d] = getDate();
     const classes = useStyles();
@@ -122,7 +124,7 @@ function Year() {
     return (
         <Fragment>
             <FormHelperText>Year</FormHelperText>
-            <Select value={year} className={classes.selectSize} onChange={(ev) => setYear(ev.target.value)}>
+            <Select value={year} className={classes.selectSize} onChange={(ev) => { setYear(ev.target.value);updateData(context.dispatch, ev.target.value, month); }}>
                 {
                     years.map(y => <MenuItem key={y} value={y}>{y}</MenuItem>)
                 }
@@ -133,7 +135,7 @@ function Year() {
 
 function Month() {
     let context = useContext(MainContext);
-    let { month } = context.state;
+    let { year, month } = context.state;
     let { setMonth, setDay } = context.dispatch;
     const classes = useStyles();
     let months = [];
@@ -143,7 +145,7 @@ function Month() {
     return (
         <Fragment>
             <FormHelperText>Month</FormHelperText>
-            <Select value={month} className={classes.selectSize} onChange={(ev) => { setMonth(ev.target.value);setDay(1)}}>
+            <Select value={month} className={classes.selectSize} onChange={(ev) => { setMonth(ev.target.value);setDay(1);updateData(context.dispatch, year, ev.target.value); }}>
                 {
                     months.map(m => <MenuItem key={m} value={m}>{m}</MenuItem>)
                 }
@@ -221,6 +223,17 @@ function numToStr(num){
     return num < 10 ? `0${num}` : num;
 }
 
+// this function will update events by select year, month and select mode as weekly or daily
+function updateData(dispatch, year, month, startDay = 0, endDay = 0){
+    let { setEvents } = dispatch;
+    let newUrl = startDay && endDay ? `${uri}/${year}/${month}/${startDay}/${endDay}` : `${uri}/${year}/${month}`;
+    axios.get(newUrl).then(function (res) {
+        setEvents(res.data);
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
 export {
     uri,
     configUri,
@@ -236,5 +249,6 @@ export {
     Modes,
     Mode,
     toFormData,
-    numToStr
+    numToStr,
+    updateData
 }
