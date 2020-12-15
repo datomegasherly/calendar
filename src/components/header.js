@@ -3,20 +3,21 @@ import MainContext from '../context';
 import { Grid, Button, Box, Hidden } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TodayIcon from '@material-ui/icons/Today';
-import { useStyles, Year, Month, Day, getDate, Mode } from '../helper';
+import { useStyles, Year, Month, Day, getDate, Mode, updateData } from '../helper';
 import { Link } from 'react-router-dom';
 
-function updateDate({setYear, setMonth, setDay}) {
+function updateDate({setEvents, setYear, setMonth, setDay}) {
     let [ year , month, day ] = getDate();
     setYear(year);
     setMonth(month);
     setDay(day);
+    updateData({setEvents}, year, month);
 }
 
 function Header() {
     let context = useContext(MainContext);
     let { year, month, day, mode } = context.state;
-    let { setYear, setMonth, setDay } = context.dispatch;
+    let { setEvents, setYear, setMonth, setDay } = context.dispatch;
     let classes = useStyles();
     return (
         <Grid container>
@@ -36,7 +37,7 @@ function Header() {
             </Grid>
             <Grid item container xs={4} sm={3} md={3} lg={2} pl={2}>
                 <Box mt={1} width="50%" align="center">
-                    <Button onClick={() => updateDate({setYear, setMonth, setDay})} variant="outlined" color="primary">
+                    <Button onClick={() => updateDate({setEvents, setYear, setMonth, setDay})} variant="outlined" color="primary">
                         <TodayIcon /><Hidden only={['xs', 'sm']}> Today</Hidden>
                     </Button>
                 </Box>
