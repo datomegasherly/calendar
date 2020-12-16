@@ -8,10 +8,10 @@ import { useStyles, getDate, getLastDay, getCurrentDay, numToStr } from '../../h
 import { Grid, Paper, Typography, Hidden } from '@material-ui/core';
 
 // this function will return boxGrid
-const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYear, pMonth, pDay, type}) => {
+const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYear, pMonth, pDay, type, isHighlight}) => {
     let currentDayEventCount = context.state.events.filter(event => event.full == `${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`).length;
     return (
-        <Grid key={pDay} className={classNames(classes.boxMargin, classes.boxSize)} item>
+        <Grid key={pDay} className={classNames(classes.boxMargin, classes.boxSize,isHighlight ? classes.highlightDays : '')} item>
             <Paper elevation={2} className={classNames(classes.cardBox, type=='notcurrent' ? classes.grayBox : '', 
                 pYear == currentDate[0] && 
                 pMonth == currentDate[1] && 
@@ -25,7 +25,7 @@ const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYea
                 <Typography>
                     {
                         currentDayEventCount ?  
-                        <Grid onClick={() => changeState(pYear,pMonth,pDay)}>{currentDayEventCount} Events</Grid> : 'No Events'
+                        <Grid className={classes.eventSelect} onClick={() => changeState(pYear,pMonth,pDay)}>{currentDayEventCount} Events</Grid> : 'No Events'
                     }
                 </Typography>
             </Paper>
@@ -57,12 +57,15 @@ const dayBox = ({startDay, endDay, days, Days}) => {
         setMonth(pMonth);
         setDay(pDay);
     }
+    let i = 0;
     return (
         <Fragment>
             {
                 Days.map(ds => {
+                    i++;
+                    if(i == 7) i = 0;
                     return (
-                        <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize)} item>
+                        <Grid key={Math.random()} className={classNames(classes.boxMargin, classes.boxSize, i > 0 && i/2 == Math.round(i/2) ? classes.highlightDays : '')} item>
                             <Hidden only={['xs', 'sm', 'md']}>
                                 <Typography variant="h6" align="center">{ds}</Typography>
                             </Hidden>
@@ -75,20 +78,26 @@ const dayBox = ({startDay, endDay, days, Days}) => {
             }
             {
                 startDay.map(sd => {
+                    i++;
+                    if(i == 7) i = 0;
                     let prevSd = lastPrevDay + 1;
                     lastPrevDay++;
-                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: prevYear, pMonth: prevMonth, pDay: prevSd, type: 'notcurrent'});
+                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: prevYear, pMonth: prevMonth, pDay: prevSd, type: 'notcurrent', isHighlight: i > 0 && i/2 == Math.round(i/2) ? true : false});
                 })
             }
             {
                 days.map(d => {
-                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: year, pMonth: month, pDay: d, type: 'current'});
+                    i++;
+                    if(i == 7) i = 0;
+                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: year, pMonth: month, pDay: d, type: 'current', isHighlight: i > 0 && i/2 == Math.round(i/2) ? true: false});
                 })
             }
             {
                 endDay.map(ed => {
+                    i++;
+                    if(i == 7) i = 0;
                     nextSd += 1;
-                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: nextYear, pMonth: nextMonth, pDay: nextSd, type: 'notcurrent'});
+                    return bodyBox({context, currentDate, classes, changeState, update: setPrevNext, Days, pYear: nextYear, pMonth: nextMonth, pDay: nextSd, type: 'notcurrent', isHighlight: i > 0 && i/2 == Math.round(i/2) ? true: false});
                 })
             }
         </Fragment>
