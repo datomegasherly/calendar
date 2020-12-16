@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
-import { Grid, Button, Box, Hidden } from '@material-ui/core';
+import { Grid, Button, Box, Hidden, ButtonGroup } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TodayIcon from '@material-ui/icons/Today';
 import { useStyles, Year, Month, Day, getDate, Mode, updateData } from '../helper';
@@ -21,33 +21,31 @@ function Header() {
     let classes = useStyles();
     return (
         <Grid container>
-            <Grid item container xs={8} sm={9} md={9} lg={10}>
-                <Grid className={classes.padding} item xs={3}>
+            <Grid item container xs={6} sm={8} md={5} lg={6}>
+                <Grid className={classes.padding} item xs={4}>
                     <Year />
                 </Grid>
-                <Grid className={classes.padding} item xs={3}>
+                <Grid className={classes.padding} item xs={4}>
                     <Month />
                 </Grid>
-                <Grid className={classes.padding} item xs={3}>
+                <Grid className={classes.padding} item xs={4}>
                     <Day />
                 </Grid>
-                <Grid className={classes.padding} item xs={3}>
-                    <Mode />
-                </Grid>
             </Grid>
-            <Grid item container xs={4} sm={3} md={3} lg={2} pl={2}>
-                <Box mt={1} width="50%" align="center">
-                    <Button onClick={() => updateDate({setEvents, setYear, setMonth, setDay})} variant="outlined" color="primary">
-                        <TodayIcon /><Hidden only={['xs', 'sm']}> Today</Hidden>
-                    </Button>
-                </Box>
-                <Box mt={1} width="50%" align="center">
-                    <Link to="/add" className={classes.links}>
-                        <Button variant="outlined" color="primary">
+            <Grid item container xs={6} sm={4} md={3} lg={2} pl={2}>
+                <Box mt={1} width="33%" align="center">
+                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                        <Button onClick={() => updateDate({setEvents, setYear, setMonth, setDay})}>
+                            <TodayIcon /><Hidden only={['xs', 'sm']}> Today</Hidden>
+                        </Button>
+                        <Button component={Link} to="/add" color="primary" aria-label="contained primary button">
                             <AddIcon /><Hidden only={['xs', 'sm']}> Add</Hidden>
                         </Button>
-                    </Link>
+                    </ButtonGroup>
                 </Box>
+            </Grid>
+            <Grid item container xs={12} sm={12} md={4} lg={3} pl={2}>
+                <Mode />
             </Grid>
         </Grid>
     )
