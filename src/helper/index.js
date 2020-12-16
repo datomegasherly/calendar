@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import MainContext from '../context';
-import { FormHelperText, Select, MenuItem, makeStyles } from '@material-ui/core';
+import { FormHelperText, Select, MenuItem, makeStyles, Button, Hidden, Box, ButtonGroup } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { Fragment } from 'react';
@@ -44,15 +44,23 @@ const useStyles = makeStyles({
         padding: '6px'
     },
     cardBox: {
-        padding: '4px',
+        padding: '3px',
         width: '100%',
         cursor: 'pointer',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+            backgroundColor: '#dff6ff',
+            color: 'darkgray',
+            transition: 'all 0.2s ease-in-out'
+        },
         '&.selected': {
-            backgroundColor: '#cce8f3'
+            backgroundColor: '#8cdfff',
+            transition: 'all 0.2s ease-in-out'
         },
         '&.current': {
             backgroundColor: '#47c0f1',
-            color: 'white'
+            color: 'white',
+            transition: 'all 0.2s ease-in-out'
         }
     },
     smallText: {
@@ -71,6 +79,14 @@ const useStyles = makeStyles({
     grayBox: {
         backgroundColor: '#efefef',
         color: '#ababab'
+    },
+    eventSelect: {
+        "&:hover": {
+            color: 'red'
+        }
+    },
+    highlightDays: {
+        backgroundColor: '#efefef'
     }
 });
 
@@ -189,12 +205,19 @@ function Mode() {
     const classes = useStyles();
     return (
         <Fragment>
-            <FormHelperText>View Mode</FormHelperText>
-            <Select value={mode} className={classes.selectSize} onChange={(ev) => setMode(ev.target.value)}>
-                {
-                    Modes.map((m, i) => <MenuItem key={i+1} value={i+1}>{m}</MenuItem>)
-                }
-            </Select>
+            <Box mt={1} width="33%" align="center">
+                <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                    <Button onClick={() => setMode(1)}>
+                        Daily
+                    </Button>
+                    <Button onClick={() => setMode(2)}>
+                        Weekly
+                    </Button>
+                    <Button onClick={() => setMode(3)}>
+                        Monthly
+                    </Button>
+                </ButtonGroup>
+            </Box>
         </Fragment>
     )
 }
