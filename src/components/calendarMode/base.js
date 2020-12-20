@@ -7,29 +7,30 @@ import classNames from 'classnames';
 import { useStyles, getDate, getLastDay, getCurrentDay, numToStr } from '../../helper';
 import { Box, Grid, Paper, Typography, Hidden, Chip } from '@material-ui/core';
 
-const EventBox = ({context, year, month, day}) => {
-    let currentDayEvents = context.state.events.filter(event => event.full == `${year}-${numToStr(month)}-${numToStr(day)}`);
+const EventBox = ({currentEvent}) => {
     return (
         <React.Fragment>
             {
-                currentDayEvents.length ?
-                    currentDayEvents.map(event => {
-                        return (
-                            <Box 
-                                bgcolor="#a385ff"
-                                color="white"
-                                borderRadius={3}
-                                pl={1}
-                                mb="2px"
-                                textOverflow="ellipsis"
-                                whiteSpace="nowrap"
-                                overflow="hidden"
-                                key={event.id}
-                                title={event.event}
-                            >
-                                {event.event}
-                            </Box>
-                        )
+                currentEvent.length ?
+                    currentEvent.map((event, i) => {
+                        if(i < 2){
+                            return (
+                                <Box 
+                                    bgcolor="#a385ff"
+                                    color="white"
+                                    borderRadius={3}
+                                    pl={1}
+                                    mb="2px"
+                                    textOverflow="ellipsis"
+                                    whiteSpace="nowrap"
+                                    overflow="hidden"
+                                    key={event.id}
+                                    title={event.event}
+                                >
+                                    {event.event}
+                                </Box>
+                            )
+                        }
                     })
                     : <Box pt={2} align='center'>No Event</Box>
             }
@@ -39,6 +40,7 @@ const EventBox = ({context, year, month, day}) => {
 
 // this function will return boxGrid
 const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYear, pMonth, pDay, type, isHighlight}) => {
+    let currentDayEvents = context.state.events.filter(event => event.full == `${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`);
     return (
         <Grid key={pDay} className={classNames(classes.boxMargin, classes.boxSize,isHighlight ? classes.highlightDays : '')} item>
             <Paper elevation={2} className={classNames(classes.cardBox, type=='notcurrent' ? classes.grayBox : '', 
@@ -50,10 +52,11 @@ const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYea
                 <Typography variant="h6">{pDay}</Typography>
                 <Typography className={classes.smallText}>
                     {Days[getCurrentDay(pYear, pMonth, pDay)]}
+                    <Box className={classes.floatRight}><b>{currentDayEvents.length}</b> {`Event${currentDayEvents.length > 1 ? 's' : ''}`}</Box>
                 </Typography>
                 <Typography>
                     <Grid className={classes.eventSelect} onClick={() => changeState(pYear,pMonth,pDay)}>
-                        <EventBox context={context} year={pYear} month={pMonth} day={pDay} />
+                        <EventBox currentEvent={currentDayEvents} year={pYear} month={pMonth} day={pDay} />
                     </Grid>
                 </Typography>
             </Paper>
