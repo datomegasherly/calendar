@@ -44,6 +44,7 @@ const useStyles = makeStyles({
         padding: '6px'
     },
     cardBox: {
+        height: '100px',
         padding: '3px',
         width: '100%',
         cursor: 'pointer',

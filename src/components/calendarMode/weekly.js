@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import MainContext from '../../context';
 import { getLastDay, getCurrentDay, Days, getDate, useStyles } from '../../helper';
 import { Grid } from '@material-ui/core';
-import { dayBox } from './base';
+import { DayBox } from './base';
 
 function Weekly() {
     const context = useContext(MainContext);
@@ -27,7 +27,7 @@ function Weekly() {
     }
     return (
         <Grid style={{marginTop: '15px'}} container>
-            { dayBox({startDay: beforeDays, endDay: afterDays, days: currentWeekDays, Days}) }
+            <DayBox startDay={beforeDays} endDay={afterDays} days={currentWeekDays} Days={Days} />
         </Grid>
     )
 }

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import MainContext from '../../context';
 import { getLastDay, getCurrentDay, Days } from '../../helper';
 import { Grid } from '@material-ui/core';
-import { dayBox } from './base';
+import { DayBox } from './base';
 
 function Monthly() {
     const context = useContext(MainContext);
@@ -23,7 +23,7 @@ function Monthly() {
     }
     return (
         <Grid style={{marginTop: '15px'}} container>
-            { dayBox({startDay, endDay, days, Days}) }
+            <DayBox startDay={startDay} endDay={endDay} days={days} Days={Days} />
         </Grid>
     )
 }
