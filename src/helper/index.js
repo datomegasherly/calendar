@@ -88,6 +88,9 @@ const useStyles = makeStyles({
     },
     highlightDays: {
         backgroundColor: '#efefef'
+    },
+    floatRight: {
+        float: 'right'
     }
 });
 
