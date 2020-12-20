@@ -43,8 +43,10 @@ const useStyles = makeStyles({
     boxMargin: {
         padding: '6px'
     },
-    cardBox: {
+    cardBoxFixedHeight: {
         height: '100px',
+    },
+    cardBox: {
         padding: '3px',
         width: '100%',
         cursor: 'pointer',

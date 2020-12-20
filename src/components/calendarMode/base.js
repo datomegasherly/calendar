@@ -43,7 +43,7 @@ const bodyBox = ({context, currentDate, classes, changeState, update, Days, pYea
     let currentDayEvents = context.state.events.filter(event => event.full == `${pYear}-${numToStr(pMonth)}-${numToStr(pDay)}`);
     return (
         <Grid key={pDay} className={classNames(classes.boxMargin, classes.boxSize,isHighlight ? classes.highlightDays : '')} item>
-            <Paper elevation={2} className={classNames(classes.cardBox, type=='notcurrent' ? classes.grayBox : '', 
+            <Paper elevation={2} className={classNames(classes.cardBox, classes.cardBoxFixedHeight, type=='notcurrent' ? classes.grayBox : '', 
                 pYear == currentDate[0] && 
                 pMonth == currentDate[1] && 
                 pDay == currentDate[2] ? 'current' : (pYear == context.state.year && pMonth == context.state.month && pDay == context.state.day) ? 'selected' : '')}
