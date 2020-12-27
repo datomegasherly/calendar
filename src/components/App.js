@@ -24,6 +24,8 @@ function reducer(state, action){
             return { ...state, events: action.payload };
         case 'setMode':
             return { ...state, mode: action.payload };
+        case 'setOpen':
+            return { ...state, open: action.payload };
         default:
             throw new Error(`Invalid Action ${action.type} for State`);
     }
@@ -36,7 +38,8 @@ export function App(){
         month: date[1],
         day: date[2],
         events: [],
-        mode: 3
+        mode: 3,
+        open: false
     };
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -45,13 +48,15 @@ export function App(){
     const setDay = (payload) => dispatch({type: "setDay", payload});
     const setEvents = (payload) => dispatch({type: "setEvents", payload});
     const setMode = (payload) => dispatch({type: "setMode", payload});
+    const setOpen = (payload) => dispatch({type: "setOpen", payload});
 
     const dispatcher = {
         setYear,
         setMonth,
         setDay,
         setEvents,
-        setMode
+        setMode,
+        setOpen
     };
 
     const newState = {
