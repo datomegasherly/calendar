@@ -31,8 +31,8 @@ import axios from 'axios';
 function Daily() {
     const context = useContext(MainContext);
     let { year, month, day, events } = context.state;
-    let { setEvents } = context.dispatch;
-    let [open, setOpen] = useState(false);
+    let { setEvents, setOpen } = context.dispatch;
+    let [openCurrent, setOpenCurrent] = useState(false);
     let [ selectedId, setSelectedId ] = useState(false);
     let [ error, setError ] = useState(false);
     let [ errorSeverity, setErrorSeverity ] = useState('error');
@@ -44,7 +44,7 @@ function Daily() {
     let newMonth = numToStr(month);
     const removeCalendar = (id) => {
         if(events && events.find(r => r.id == id)){
-            setOpen(true);
+            setOpenCurrent(true);
             setSelectedId(id);
         }
     }
@@ -66,16 +66,16 @@ function Daily() {
                     setError(true);
                     setErrorSeverity('success');
                     setErrorTitle('selected event delete completed');
-                    setOpen(false);
+                    setOpenCurrent(false);
                 }
             }).catch(err => {
-                setOpen(false);
+                setOpenCurrent(false);
                 setError(true);
                 setErrorSeverity('error');
                 setErrorTitle(err.message);
             });
         } else {
-            setOpen(false);
+            setOpenCurrent(false);
             setSelectedId(false);
         }
     }
@@ -87,10 +87,10 @@ function Daily() {
                 </Snackbar>
             }
             {
-                open ? 
+                openCurrent ? 
                 <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
+                open={openCurrent}
+                onClose={() => setOpenCurrent(false)}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 >
@@ -101,7 +101,7 @@ function Daily() {
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick={() => setOpen(false)} color="primary">
+                    <Button onClick={() => setOpenCurrent(false)} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={removeCalendarSet} color="secondary" autoFocus>
@@ -147,7 +147,7 @@ function Daily() {
                                                                 <Button className={classes.marginRight} onClick={() => removeCalendar(event.id)} variant="outlined" color="secondary">
                                                                     <EditIcon /><Hidden only={['xs', 'sm']}> Delete</Hidden>
                                                                 </Button>
-                                                                <Link to={`/edit/${event.id}`} className={classes.links}>
+                                                                <Link to={`/edit/${event.id}`} onClick={() => setOpen(true)} className={classes.links}>
                                                                     <Button variant="outlined" color="primary">
                                                                         <EditIcon /><Hidden only={['xs', 'sm']}> Edit</Hidden>
                                                                     </Button>
