@@ -33,14 +33,14 @@ function FullDateInput(){
 
 function CenterButtonGroup(){
     let context = useContext(MainContext);
-    let { setEvents, setYear, setMonth, setDay } = context.dispatch;
+    let { setEvents, setYear, setMonth, setDay, setOpen } = context.dispatch;
     return (
         <Box mt={1} width="33%" align="center">
             <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
                 <Button onClick={() => updateDate({setEvents, setYear, setMonth, setDay})}>
                     <TodayIcon /><Hidden only={['xs', 'sm']}> Today</Hidden>
                 </Button>
-                <Button component={Link} to="/add" color="primary" aria-label="contained primary button">
+                <Button component={Link} to="/add" onClick={() => setOpen(true)} color="primary" aria-label="contained primary button">
                     <AddIcon /><Hidden only={['xs', 'sm']}> Add</Hidden>
                 </Button>
             </ButtonGroup>
