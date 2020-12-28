@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { useStyles, theme, toFormData, uri, numToStr } from '../../helper';
+import React, { useContext, useState, useRef, useEffect } from 'react';
+import { useStyles, theme, toFormData, uri, numToStr, colors } from '../../helper';
 import { v4 } from 'uuid';
 import { Link } from 'react-router-dom';
-import { Button, FormControl, Grid, Input, InputLabel } from '@material-ui/core';
+import { Button, FormControl, Grid, Input, InputLabel, Box } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -14,6 +14,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MainContext from '../../context';
 import axios from 'axios';
+import classNames from 'classnames';
+import initRef from '../../helper/refHelper';
 
 function Add(props){
     let { event, setEvent, handleEventChange, handleTimeChange, checkEvent } = props;
@@ -21,6 +23,8 @@ function Add(props){
     let { year, month, day, events, open } = context.state;
     let { setEvents, setMode, setOpen } = context.dispatch;
     let classes = useStyles();
+    let [ RefBox, OrigBox, setHandler ] = initRef({useState, useRef, useEffect, document, index: 0});
+
     let saveEvent = () => {
         if(checkEvent()){
             let start_time = {hour: event.startTime.getHours(), minute: event.startTime.getMinutes()};
@@ -34,7 +38,8 @@ function Add(props){
                 full,
                 event: event.title,
                 start_time,
-                end_time
+                end_time,
+                color: event.color
             };
             let formData = toFormData(data);
             setEvent({...event, loading: true});
@@ -65,6 +70,10 @@ function Add(props){
     let handleClose = () => {
         setOpen(false);
     }
+    let handleChangeColor = (color) => {
+        setEvent({...event, color});
+        setHandler(false);
+    }
     return (
         <ThemeProvider theme={theme}>
             <Dialog 
@@ -78,43 +87,63 @@ function Add(props){
                 <DialogTitle id="alert-dialog-title">Current Date : {`${year}/${month}/${day}`}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <Grid container>
-                                    <Grid container item xs={12} sm={12} md={6}>
-                                        <Grid item mt={5} xs={12} className={classes.padding}>
-                                            <FormControl className={classes.selectSize}>
-                                                <InputLabel htmlFor="event">Event Description</InputLabel>
-                                                <Input id="event" value={event.title || ''} onChange={handleEventChange} />
-                                            </FormControl>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container item xs={12} sm={12} md={6}>
-                                        <Grid item mt={5} xs={12} sm={6} className={classes.padding}>
-                                            <FormControl className={classes.selectSize}>
-                                                <TimePicker
-                                                    ampm={false}
-                                                    id="startTime"
-                                                    label="Start Time"
-                                                    value={event.startTime}
-                                                    onChange={(date) => handleTimeChange(date, 'start')}
-                                                />
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid item xs={12} sm={6} className={classes.padding}>
-                                            <FormControl className={classes.selectSize}>
-                                                <TimePicker
-                                                    ampm={false}
-                                                    id="endTime"
-                                                    label="End Time"
-                                                    value={event.endTime}
-                                                    onChange={(date) => handleTimeChange(date, 'end')}
-                                                />
-                                            </FormControl>
-                                        </Grid>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid container>
+                                <Grid container item xs={12} sm={12} md={6}>
+                                    <Grid item mt={5} xs={12} className={classes.padding}>
+                                        <FormControl className={classes.selectSize}>
+                                            <InputLabel htmlFor="event">Event Description</InputLabel>
+                                            <Input id="event" value={event.title || ''} onChange={handleEventChange} />
+                                        </FormControl>
                                     </Grid>
                                 </Grid>
-                            </MuiPickersUtilsProvider>
+                                <Grid container item xs={12} sm={12} md={6}>
+                                    <Grid item mt={5} xs={12} sm={6} className={classes.padding}>
+                                        <FormControl className={classes.selectSize}>
+                                            <TimePicker
+                                                ampm={false}
+                                                id="startTime"
+                                                label="Start Time"
+                                                value={event.startTime}
+                                                onChange={(date) => handleTimeChange(date, 'start')}
+                                            />
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} className={classes.padding}>
+                                        <FormControl className={classes.selectSize}>
+                                            <TimePicker
+                                                ampm={false}
+                                                id="endTime"
+                                                label="End Time"
+                                                value={event.endTime}
+                                                onChange={(date) => handleTimeChange(date, 'end')}
+                                            />
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} sm={6} className={classNames(classes.padding, classes.marginTop)}>
+                                    <FormControl className={classes.selectSize}>
+                                        <OrigBox 
+                                            className={classes.colorBox}
+                                            bgcolor={event.color ? colors[event.color] : colors['default']}
+                                        ></OrigBox>
+                                        <RefBox className={classes.colorBoxRef}>
+                                            {
+                                                Object.keys(colors).map(color => {
+                                                    return (
+                                                        <Box
+                                                            className={classNames(classes.colorBox, 'smallBox')}
+                                                            onClick={() => handleChangeColor(color)}
+                                                            bgcolor={colors[color]}
+                                                        ></Box>
+                                                    )
+                                                })
+                                            }
+                                        </RefBox>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </MuiPickersUtilsProvider>
                     </DialogContentText>
                     <DialogActions>
                         <Grid container className={classes.marginBottom}>

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { useStyles, theme, toFormData, uri, numToStr } from '../../helper';
+import React, { useContext, useState, useRef, useEffect } from 'react';
+import { useStyles, theme, toFormData, uri, numToStr, colors } from '../../helper';
 import { Link } from 'react-router-dom';
-import { Button, FormControl, Grid, Input, InputLabel } from '@material-ui/core';
+import { Button, FormControl, Grid, Input, InputLabel, Box } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -13,6 +13,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MainContext from '../../context';
 import axios from 'axios';
+import classNames from 'classnames';
+import initRef from '../../helper/refHelper';
 
 function Edit(props){
     let { event, setEvent, handleEventChange, handleTimeChange, checkEvent } = props;
@@ -20,6 +22,7 @@ function Edit(props){
     let { year, month, day, events, open } = context.state;
     let { setEvents, setMode } = context.dispatch;
     let classes = useStyles();
+    let [ RefBox, OrigBox, setHandler ] = initRef({useState, useRef, useEffect, document, index: 0});
 
     let editEvent = () => {
         if(checkEvent()){
@@ -40,7 +43,8 @@ function Edit(props){
                 full,
                 event: event.title,
                 start_time,
-                end_time
+                end_time,
+                color: event.color
             };
             let formData = toFormData(data);
             setEvent({...event, loading: true});
@@ -55,9 +59,10 @@ function Edit(props){
                 if(res.data.success){
                     events.map(r => {
                         if(r.id == id){
-                            r.event = event.title,
+                            r.event = event.title;
                             r.start_time = start_time;
                             r.end_time = end_time;
+                            r.color = event.color;
                         }
                     });
                     await setEvent({...event, redirect: true});
@@ -75,6 +80,10 @@ function Edit(props){
     }
     let handleClose = () => {
         setOpen(false);
+    }
+    let handleChangeColor = (color) => {
+        setEvent({...event, color});
+        setHandler(false);
     }
     return (
         <ThemeProvider theme={theme}>
@@ -123,6 +132,27 @@ function Edit(props){
                                                 />
                                             </FormControl>
                                         </Grid>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} className={classNames(classes.padding, classes.marginTop)}>
+                                        <FormControl className={classes.selectSize}>
+                                            <OrigBox 
+                                                className={classes.colorBox}
+                                                bgcolor={event.color ? colors[event.color] : colors['default']}
+                                            ></OrigBox>
+                                            <RefBox className={classes.colorBoxRef}>
+                                                {
+                                                    Object.keys(colors).map(color => {
+                                                        return (
+                                                            <Box
+                                                                className={classNames(classes.colorBox, 'smallBox')}
+                                                                onClick={() => handleChangeColor(color)}
+                                                                bgcolor={colors[color]}
+                                                            ></Box>
+                                                        )
+                                                    })
+                                                }
+                                            </RefBox>
+                                        </FormControl>
                                     </Grid>
                                 </Grid>
                             </MuiPickersUtilsProvider>
