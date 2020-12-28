@@ -4,7 +4,7 @@
 import React, { Fragment, useContext } from 'react';
 import MainContext from '../../context';
 import classNames from 'classnames';
-import { useStyles, getDate, getLastDay, getCurrentDay, numToStr } from '../../helper';
+import { useStyles, getDate, getLastDay, getCurrentDay, numToStr, colors } from '../../helper';
 import { Box, Grid, Paper, Typography, Hidden, Chip } from '@material-ui/core';
 
 const EventBox = ({currentEvent}) => {
@@ -16,7 +16,7 @@ const EventBox = ({currentEvent}) => {
                         if(i < 2){
                             return (
                                 <Box 
-                                    bgcolor="#a385ff"
+                                    bgcolor={event.color ? colors[event.color] : colors['default']}
                                     color="white"
                                     borderRadius={3}
                                     pl={1}

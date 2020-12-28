@@ -46,6 +46,32 @@ const useStyles = makeStyles({
     cardBoxFixedHeight: {
         height: '100px',
     },
+    colorBox: {
+        cursor: 'pointer',
+        width: '40px',
+        height: '40px',
+        borderRadius: '20px',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+            opacity: '0.8',
+            transition: 'all 0.2s ease-in-out'
+        },
+        '&.smallBox': {
+            width: '35px',
+            height: '35px',
+            marginTop: '2px',
+            marginRight: '5px',
+            marginLeft: '5px'
+        }
+    },
+    colorBoxRef: {
+        position: 'absolute',
+        left: '50px',
+        background: 'white',
+        border: '1px solid',
+        borderRadius: '3px',
+        height: '100%',
+    },
     cardBox: {
         padding: '3px',
         width: '100%',
@@ -76,6 +102,9 @@ const useStyles = makeStyles({
         marginTop: '-5px',
         float: 'right'
     },
+    marginTop: {
+        marginTop: '8px !important'
+    },
     marginRight: {
         marginRight: '5px'
     },
@@ -95,6 +124,13 @@ const useStyles = makeStyles({
         float: 'right'
     }
 });
+
+const colors = {
+    default: '#a385ff',
+    red: 'red',
+    green: 'green',
+    blue: 'blue',
+}
 
 const getLastDay = (year, month) => {
     if(month > 12){
@@ -268,6 +304,7 @@ export {
     configUri,
     theme,
     useStyles,
+    colors,
     getLastDay,
     getCurrentDay,
     Days,
