@@ -24,6 +24,7 @@ function EventMode(propType, prop){
         errorTitle: '',
         redirect: false,
         loading: false,
+        color: 'default',
         dataIsLoaded: false // this variable use in edit mode and will ignore useEffect call when dataIsLoaded is true
     });
     let context = useContext(MainContext);
@@ -60,6 +61,7 @@ function EventMode(propType, prop){
                         startTime,
                         endTime,
                         title: data.event,
+                        color: data.color,
                         dataIsLoaded: true,
                         loading: false
                     });
