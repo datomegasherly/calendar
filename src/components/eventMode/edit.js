@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useStyles, theme, toFormData, uri, numToStr, colors } from '../../helper';
 import { Link } from 'react-router-dom';
-import { Button, FormControl, Grid, Input, InputLabel, Box } from '@material-ui/core';
+import { Button, FormControl, Grid, Input, InputLabel, Box, Select, MenuItem } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { TimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -17,9 +17,9 @@ import classNames from 'classnames';
 import initRef from '../../helper/refHelper';
 
 function Edit(props){
-    let { event, setEvent, handleEventChange, handleTimeChange, checkEvent } = props;
+    let { event, setEvent, handleEventChange, handleCategoryChange, handleTimeChange, checkEvent } = props;
     let context = useContext(MainContext);
-    let { year, month, day, events, open } = context.state;
+    let { year, month, day, events, open, category } = context.state;
     let { setEvents, setMode } = context.dispatch;
     let classes = useStyles();
     let [ RefBox, OrigBox, setHandler ] = initRef({useState, useRef, useEffect, document, index: 0});
@@ -44,7 +44,8 @@ function Edit(props){
                 event: event.title,
                 start_time,
                 end_time,
-                color: event.color
+                color: event.color,
+                category: event.category
             };
             let formData = toFormData(data);
             setEvent({...event, loading: true});
@@ -63,6 +64,7 @@ function Edit(props){
                             r.start_time = start_time;
                             r.end_time = end_time;
                             r.color = event.color;
+                            r.category = event.category;
                         }
                     });
                     await setEvent({...event, redirect: true});
@@ -152,6 +154,17 @@ function Edit(props){
                                                     })
                                                 }
                                             </RefBox>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} className={classNames(classes.padding, classes.marginTop)}>
+                                        <FormControl className={classes.selectSize}>
+                                            <Select id="category" onChange={handleCategoryChange} value={event.category}>
+                                                {
+                                                    category.map(cat => {
+                                                        return (<MenuItem key={cat.label} value={cat.label}>{cat.value}</MenuItem>)
+                                                    })
+                                                }
+                                            </Select>
                                         </FormControl>
                                     </Grid>
                                 </Grid>
