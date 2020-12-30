@@ -3,10 +3,10 @@ import axios from 'axios';
 import { configUri, updateData } from '../../helper';
 
 function effectCall(dispatch) {
-    let { setYear, setMonth, setDay, setCategory } = dispatch;
+    let { setYear, setMonth, setDay, setCategory, setStatus } = dispatch;
     axios.get(configUri).then(function (res) {
         let date = new Date(res.data.date);
-        let category = res.data.category;
+        let { category, status } = res.data;
         let y = date.getFullYear();
         let m = date.getMonth() + 1;
         let d = date.getDate();
@@ -14,6 +14,7 @@ function effectCall(dispatch) {
         setMonth(m);
         setDay(d);
         setCategory(category);
+        setStatus(status);
         updateData(dispatch, y, m);
     }).catch(function (error) {
         throw error;
