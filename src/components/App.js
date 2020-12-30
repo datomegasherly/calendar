@@ -28,6 +28,8 @@ function reducer(state, action){
             return { ...state, open: action.payload };
         case 'setCategory':
             return { ...state, category: action.payload };
+        case 'setStatus':
+            return { ...state, status: action.payload };
         default:
             throw new Error(`Invalid Action ${action.type} for State`);
     }
@@ -42,7 +44,8 @@ export function App(){
         events: [],
         mode: 3,
         open: false,
-        category: []
+        category: [],
+        status: []
     };
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -53,6 +56,7 @@ export function App(){
     const setMode = (payload) => dispatch({type: "setMode", payload});
     const setOpen = (payload) => dispatch({type: "setOpen", payload});
     const setCategory = (payload) => dispatch({type: "setCategory", payload});
+    const setStatus = (payload) => dispatch({type: "setStatus", payload});
 
     const dispatcher = {
         setYear,
@@ -61,7 +65,8 @@ export function App(){
         setEvents,
         setMode,
         setOpen,
-        setCategory
+        setCategory,
+        setStatus
     };
 
     const newState = {
