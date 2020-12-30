@@ -26,6 +26,7 @@ function EventMode(propType, prop){
         loading: false,
         color: 'default',
         category: false,
+        status: 1,
         dataIsLoaded: false // this variable use in edit mode and will ignore useEffect call when dataIsLoaded is true
     });
     let context = useContext(MainContext);
@@ -37,7 +38,7 @@ function EventMode(propType, prop){
         let full = `1900-01-01`;
         let startTime = new Date(`${full}T00:00:00`);
         let endTime = new Date(`${full}T00:00:00`);
-        if(propType === 'create'){
+        if(propType === 'add'){
             setEvent({...event, startTime, endTime, dataIsLoaded: true});
         }
     }, []); // when use [] after useEffect , it will call once
@@ -64,6 +65,7 @@ function EventMode(propType, prop){
                         title: data.event,
                         color: data.color,
                         category: data.category,
+                        status: data.status ? data.status : 1,
                         dataIsLoaded: true,
                         loading: false
                     });
@@ -107,22 +109,18 @@ function EventMode(propType, prop){
         }
     }
     /**
-     * Update event string
+     * Update event data
      * @param {Javascript Event} ev 
      */
-    const handleEventChange = (ev) => {
-        let title = ev.target.value;
-        setEvent({...event, title});
-    }
-    const handleCategoryChange = (ev) => {
-        let category = ev.target.value;
-        setEvent({...event, category});
+    const handleChange = (ev) => {
+        let id = ev.target.name;
+        let value = ev.target.value;
+        setEvent({...event, [id]: value});
     }
     let props = {
         event,
         setEvent,
-        handleEventChange,
-        handleCategoryChange,
+        handleChange,
         handleTimeChange,
         checkEvent
     };

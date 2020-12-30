@@ -18,9 +18,9 @@ import classNames from 'classnames';
 import initRef from '../../helper/refHelper';
 
 function Add(props){
-    let { event, setEvent, handleEventChange, handleCategoryChange, handleTimeChange, checkEvent } = props;
+    let { event, setEvent, handleChange, handleTimeChange, checkEvent } = props;
     let context = useContext(MainContext);
-    let { year, month, day, events, open, category } = context.state;
+    let { year, month, day, events, open, category, status } = context.state;
     let { setEvents, setMode, setOpen } = context.dispatch;
     let classes = useStyles();
     let [ RefBox, OrigBox, setHandler ] = initRef({useState, useRef, useEffect, document, index: 0});
@@ -39,7 +39,8 @@ function Add(props){
                 start_time,
                 end_time,
                 color: event.color,
-                category: event.category
+                category: event.category,
+                status: event.status
             };
             let formData = toFormData(data);
             setEvent({...event, loading: true});
@@ -93,7 +94,7 @@ function Add(props){
                                     <Grid item mt={5} xs={12} className={classes.padding}>
                                         <FormControl className={classes.selectSize}>
                                             <InputLabel htmlFor="event">Event Description</InputLabel>
-                                            <Input id="event" value={event.title || ''} onChange={handleEventChange} />
+                                            <Input id="event" name="title" value={event.title || ''} onChange={handleChange} />
                                         </FormControl>
                                     </Grid>
                                 </Grid>
@@ -144,10 +145,21 @@ function Add(props){
                                 </Grid>
                                 <Grid item xs={12} sm={6} className={classNames(classes.padding, classes.marginTop)}>
                                     <FormControl className={classes.selectSize}>
-                                        <Select id="category" onChange={handleCategoryChange} value={event.category}>
+                                        <Select name="category" onChange={handleChange} value={event.category}>
                                             {
                                                 category.map(cat => {
                                                     return (<MenuItem key={cat.label} value={cat.label}>{cat.value}</MenuItem>)
+                                                })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6} className={classNames(classes.padding, classes.marginTop)}>
+                                    <FormControl className={classes.selectSize}>
+                                        <Select name="status" onChange={handleChange} value={event.status}>
+                                            {
+                                                status.map(st => {
+                                                    return (<MenuItem key={st.label} value={st.label}>{st.value}</MenuItem>)
                                                 })
                                             }
                                         </Select>
