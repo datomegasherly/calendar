@@ -1,7 +1,7 @@
 # calendar
 A Calendar to set daily programs
 
-latest version : **1.1.1**
+latest version : **1.3.0**
 
 ----------
 > ### Used Technologies :
