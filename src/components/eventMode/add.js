@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useStyles, theme, toFormData, uri, numToStr, colors } from '../../helper';
 import { v4 } from 'uuid';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Button, FormControl, Grid, Input, InputLabel, Box, Select, MenuItem } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -77,6 +77,7 @@ function Add(props){
     }
     return (
         <ThemeProvider theme={theme}>
+            { !open ? <Redirect to="/" /> : ''}
             <Dialog 
                 open={open}
                 onClose={handleClose}
